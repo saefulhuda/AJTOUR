@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Authentication</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <img src="http://ajcomm.id/img/banner/home-right.png" />
+    <ion-card-header>
+      <ion-card-title>Silahkan login</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form (submit)="doLogin($event)">
+        <ion-list lines="full" class="ion-no-margin ion-no-padding">
+          <ion-item>
+            <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input required type="text" [(ngModel)]="todo.email" name="email"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input required type="password" [(ngModel)]="todo.password" name="password"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <div class="ion-padding">
+          <ion-row>
+            <ion-col col-6>
+              <ion-button color="dark" fill="outline" expand="block" type="submit" class="ion-no-margin">Masuk
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </form>
+      <div class="ion-padding">
+        <ion-row>
+          <ion-col col-12>
+            <p>Belum punya akun?</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+            <ion-button color="dark" fill="outline" expand="block" type="submit" class="ion-no-margin">Daftar</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button href="live" color="dark" fill="outline" expand="block" class="ion-no-margin">Tanpa daftar</ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

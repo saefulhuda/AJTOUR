@@ -1,5 +1,7 @@
 {
   "name": "ajtour",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
