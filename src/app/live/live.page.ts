@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-live',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./live.page.scss'],
 })
 export class LivePage implements OnInit {
-
-  constructor() { }
+  header: string = 'AJCOMM';
+  constructor(public nav: NavController, private route: Router) {
+   }
 
   ngOnInit() {
+  }
+
+  showProfile()
+  {
+    // console.log('show profile');
+    this.route.navigate(['/live/profile']);
   }
 
 }

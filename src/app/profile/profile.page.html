@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-item>
+    <ion-avatar slot="start">
+      <img src="{{profile.path_image}}">
+    </ion-avatar>
+    <ion-label>{{profileName}}</ion-label>
+  </ion-item>
+  <ion-list>
+    <ion-item>
+      <ion-label>No. Handphone</ion-label>
+      <p slot="end" color="primary">{{profile.phone}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-label>Email</ion-label>
+      <p slot="end" color="primary">{{profile.email}}</p>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-grid>
+      <ion-button (click)="doLogout()" color="dark" expand="block">Keluar</ion-button>
+    </ion-grid>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registration</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Form Daftar</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-item>
+          <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required type="text" [(ngModel)]="email"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Phone <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required type="text" [(ngModel)]="phone"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required type="password" [(ngModel)]="password"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <div class="ion-padding">
+        <ion-row>
+          <ion-col col-6>
+            <ion-button (click)="doRegister()" color="dark" fill="outline" expand="block" type="submit"
+              class="ion-no-margin">Daftar
+            </ion-button>
+          </ion-col>
+          <ion-col col-6>
+            <ion-button (click)="doLogin()" color="dark" fill="outline" expand="block" type="submit"
+              class="ion-no-margin">Masuk
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -49,6 +49,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'profile',
+        loadChildren: () =>
+        import('../profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
+        path: 'group/:id',
+        loadChildren: () =>
+        import('../group/group.module').then(m => m.GroupPageModule)
+      },
+      {
         path: '',
         redirectTo: '/live/home',
         pathMatch: 'full'

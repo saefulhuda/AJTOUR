@@ -1,5 +1,24 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>about</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content fullscreen>
+  <ion-list>
+    <ion-list-header>
+      About Company
+    </ion-list-header>
+
+    <ion-item>
+      <ion-avatar slot="start">
+        <img
+          src="{{company.image}}">
+      </ion-avatar>
+      <ion-label>
+        <h3>{{company.name}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-card *ngFor="let data of guids">
+    <ion-card-header>
+      <ion-card-title>{{data.name}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>{{data.contents}}</ion-card-content>
+  </ion-card>
+</ion-content>

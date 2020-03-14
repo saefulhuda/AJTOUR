@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 const TOKEN = environment.api_token
 @Component({
@@ -11,7 +12,7 @@ const TOKEN = environment.api_token
 
 export class AuthPage implements OnInit {
 todo = {email:'', password:''};
-  constructor(public req: HttpRequestService) { }
+  constructor(public req: HttpRequestService, private route: Router) { }
 
   ngOnInit() {
   }
@@ -20,7 +21,18 @@ todo = {email:'', password:''};
     let param = JSON.stringify({email: this.todo.email, password: this.todo.password});
     let url:string = "auth/user_login?request="+param+"&api_key="+TOKEN;
     this.req.getRequest(url).subscribe(data => 
-      console.log(data));
+      {
+        if(data.status == 1) {
+          console.log('Catat session dan login');
+          this.route.navigate(['/live']);
+        } else {
+          console.log(data.message);
+        }
+      }
+      );
   }
 
+  toRegister() {
+    this.route.navigate(['/register']);
+  }
 }

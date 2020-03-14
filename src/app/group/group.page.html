@@ -1,0 +1,35 @@
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      {{detail.group_name}}
+    </ion-list-header>
+
+    <ion-item *ngFor="let list of member">
+      <ion-avatar slot="start">
+        <img src="{{list.path_image}}">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{list.name}}</h2>
+        <h3>{{list.phone}}</h3>
+        <p>{{list.email}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="light">
+      <ion-icon md="caret-back" ios="chevron-back-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button color="light">
+        <ion-icon name="person-add-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light">
+        <ion-icon name="megaphone-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light">
+        <ion-icon name="logo-vimeo"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
