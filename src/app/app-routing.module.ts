@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'group',
     loadChildren: () => import('./group/group.module').then( m => m.GroupPageModule)
+  },
+  {
+    path: 'tour',
+    loadChildren: () => import('./tour/tour.module').then( m => m.TourPageModule)
   }
 ];
 

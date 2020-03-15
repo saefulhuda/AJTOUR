@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
+import { NavController } from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -12,7 +13,7 @@ const TOKEN = environment.api_token;
 export class GroupPage implements OnInit {
 member: any;
 detail: any;
-  constructor(private activatedRoute: ActivatedRoute, public req: HttpRequestService) { }
+  constructor(private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
@@ -32,6 +33,15 @@ detail: any;
         }
       });
     })
+  }
+
+  createTour(id) {
+    this.navCtrl.navigateForward(['live/tour/create/'+id]);
+  }
+
+  toAddMember(id) {
+    this.navCtrl.navigateForward(['live/group/add/'+id]);
+    // console.log(id);
   }
 
 }

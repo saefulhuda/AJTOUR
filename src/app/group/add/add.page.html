@@ -1,0 +1,18 @@
+<ion-header translucent>
+    <ion-toolbar>
+        <ion-searchbar (change)="searchMember()" [(ngModel)]="key"></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+    <ion-list *ngIf="member.id">
+        <ion-item (click)="showMember(member.id)">
+            <ion-avatar slot="start">
+                <img src="{{member.path_image}}">
+            </ion-avatar>
+            <ion-label>
+                <h3>{{member.name}}</h3>
+                <p>{{member.email}}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>

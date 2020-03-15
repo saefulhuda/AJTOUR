@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./live.page.scss'],
 })
 export class LivePage implements OnInit {
-  header: string = 'AJCOMM';
+  header: string = 'AJCOMM TOUR';
   constructor(public nav: NavController, private route: Router) {
    }
 

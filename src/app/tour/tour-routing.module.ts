@@ -1,20 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { GroupPage } from './group.page';
+import { TourPage } from './tour.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: GroupPage
+    component: TourPage
   },
   {
     path: 'create',
     loadChildren: () => import('./create/create.module').then( m => m.CreatePageModule)
-  },
-  {
-    path: 'add',
-    loadChildren: () => import('./add/add.module').then( m => m.AddPageModule)
   }
 ];
 
@@ -22,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class GroupPageRoutingModule {}
+export class TourPageRoutingModule {}

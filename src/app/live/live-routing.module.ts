@@ -59,6 +59,21 @@ const routes: Routes = [
         import('../group/group.module').then(m => m.GroupPageModule)
       },
       {
+        path: 'tour/create/:id',
+        loadChildren: () =>
+        import('../tour/create/create.module').then(m => m.CreatePageModule)
+      },
+      {
+        path: 'group/add/:id',
+        loadChildren: () => 
+        import('../group/add/add.module').then(m => m.AddPageModule)
+      },
+      {
+        path: 'group/create/:any',
+        loadChildren: () => 
+        import('../group/create/create.module').then(m => m.CreatePageModule)
+      },
+      {
         path: '',
         redirectTo: '/live/home',
         pathMatch: 'full'

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 const TOKEN = environment.api_token
 @Component({
@@ -12,7 +13,7 @@ const TOKEN = environment.api_token
 
 export class AuthPage implements OnInit {
 todo = {email:'', password:''};
-  constructor(public req: HttpRequestService, private route: Router) { }
+  constructor(public req: HttpRequestService, private route: Router, public toastController: ToastController) { }
 
   ngOnInit() {
   }
@@ -26,7 +27,7 @@ todo = {email:'', password:''};
           console.log('Catat session dan login');
           this.route.navigate(['/live']);
         } else {
-          console.log(data.message);
+          this.showToast(data.message, 2000, 'top');
         }
       }
       );
@@ -34,5 +35,15 @@ todo = {email:'', password:''};
 
   toRegister() {
     this.route.navigate(['/register']);
+  }
+
+  async showToast(mess: string, dur: number = 2000, pos: any) {
+    let toast = await this.toastController.create({
+      message: mess,
+      duration: dur,
+      position: pos,
+      color: 'danger'
+    });
+    return toast.present();
   }
 }

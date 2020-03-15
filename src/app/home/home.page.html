@@ -1,19 +1,40 @@
 <ion-content>
-    <ion-list>
-        <ion-list-header>
-            Groups
-        </ion-list-header>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>Ads</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-slides>
+                <ion-slide *ngFor="let list of ads">
+                    <div class="slide">
+                        <img src="{{list.image}}" />
+                        <h2>{{list.title}}</h2>
+                        <p>{{list.desc}}</p>
+                    </div>
+                </ion-slide>
+            </ion-slides>
+        </ion-card-content>
+    </ion-card>
 
-        <ion-item *ngFor="let data of groups">
-            <ion-avatar slot="start">
-                <img src="{{data.group_logo}}">
-            </ion-avatar>
-            <ion-label>
-                <h2 (click)="showDetail(data.id)">{{data.group_name}}</h2>
-                <p>{{data.group_desc}}</p>
-            </ion-label>
-        </ion-item>
-    </ion-list>
+    <ion-card>
+        <ion-card-content>
+            <ion-list>
+                <ion-list-header>
+                    Groups
+                </ion-list-header>
+
+                <ion-item *ngFor="let data of groups">
+                    <ion-avatar slot="start">
+                        <img src="{{data.group_logo}}">
+                    </ion-avatar>
+                    <ion-label>
+                        <h2 (click)="showDetail(data.id)">{{data.group_name}}</h2>
+                        <p>{{data.group_desc}}</p>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
 
     <ion-fab horizontal="end" vertical="bottom" slot="fixed">
         <ion-fab-button color="light">
@@ -21,12 +42,12 @@
         </ion-fab-button>
         <ion-fab-list side="start">
             <ion-fab-button color="light">
-                <ion-icon name="trail-sign-outline"></ion-icon>
+                <ion-icon name="earth-outline"></ion-icon>
             </ion-fab-button>
             <ion-fab-button color="light">
-                <ion-icon name="people-circle-outline"></ion-icon>
+                <ion-icon name="partly-sunny-outline"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button color="light">
+            <ion-fab-button (click)="createGroup()" color="light">
                 <ion-icon name="people-circle-outline"></ion-icon>
             </ion-fab-button>
         </ion-fab-list>

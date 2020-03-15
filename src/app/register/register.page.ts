@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpRequestService } from '../http-request.service';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -13,7 +14,7 @@ export class RegisterPage implements OnInit {
   email: string;
   password: any;
   phone: number;
-  constructor(public req: HttpRequestService, private route: Router) { }
+  constructor(public req: HttpRequestService, private route: Router, private toastController: ToastController) { }
 
   ngOnInit() {
   }
@@ -26,7 +27,7 @@ export class RegisterPage implements OnInit {
         if(data.status == 1) {
           this.route.navigate(['/auth']);
         } else {
-          console.log(data.message);
+          this.showToast(data.message, 2000, 'top');
         }
       }
       );
@@ -35,4 +36,15 @@ export class RegisterPage implements OnInit {
   doLogin() {
     this.route.navigate(['/auth']);
   }
+
+  async showToast(mess: string, dur: number = 2000, pos: any) {
+    let toast = await this.toastController.create({
+      message: mess,
+      duration: dur,
+      position: pos,
+      color: 'danger'
+    });
+    return toast.present();
+  }
+
 }

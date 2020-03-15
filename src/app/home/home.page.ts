@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -11,10 +12,24 @@ const TOKEN = environment.api_token;
 })
 export class HomePage implements OnInit{
 groups: any;
-  constructor(public req: HttpRequestService, public route: Router) {}
+ads: any;
+  constructor(public req: HttpRequestService, public route: Router, public navCtrl: NavController) {
+  }
 
   ngOnInit() {
-    // console.log('home OK');
+    this.ads = [];
+    this.ads = [
+      {
+        'title': 'Ads 1', 
+        'image': 'https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg', 
+        'desc': 'Landscape HD wallpaper | 1920x1080 | #38728 Temukan pin ini dan lainnya di Food and drink oleh Frantz Bricourt. Tag Landscape Wallpapers      Hd Nature Wallpapers      Hd Wallpapers 1080p      Nature Landscape      1080p Wallpaper      Beach Landscape      Desktop Backgrounds Desktop Wallpapers      Mobile Wallpaper'
+      },
+      {
+        'title': 'Ads 2',
+        'image': 'https://wallpapercave.com/wp/jiJZXEJ.jpg',
+        'desc': 'WallpaperCave is an online community of desktop wallpapers enthusiasts. Join now to share and explore tons of collections of awesome wallpapers.'
+      }
+    ];
     this.groups = [];
     let param = JSON.stringify({user_id:'12'});
     this.req.getRequest("live/read_all_group_by_user_id?request="+param+"&api_key="+TOKEN).subscribe(data => {
@@ -31,4 +46,9 @@ groups: any;
     this.route.navigate(['live/group/'+id]);
   }
 
+  createGroup() {
+    this.navCtrl.navigateForward(['live/group/create/app']);
+  }
+
 }
+

@@ -1,0 +1,18 @@
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Tambah Group</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Input with clear button when there is a value -->
+      <ion-input [(ngModel)]="name" clearInput placeholder="Nama group"></ion-input>
+
+      <!-- Textarea type input -->
+      <ion-textarea [(ngModel)]="desc" placeholder="Catatan group"></ion-textarea>
+      <div class="ion-padding">
+        <ion-button (click)="SubmitCreateGroup()" expand="block" class="ion-no-margin">Buat Group</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -22,13 +22,13 @@
     </ion-fab-button>
     <ion-fab-list side="start">
       <ion-fab-button color="light">
-        <ion-icon name="person-add-outline"></ion-icon>
+        <ion-icon (click)="toAddMember(detail.id)" name="person-add-outline"></ion-icon>
       </ion-fab-button>
       <ion-fab-button color="light">
         <ion-icon name="megaphone-outline"></ion-icon>
       </ion-fab-button>
       <ion-fab-button color="light">
-        <ion-icon name="logo-vimeo"></ion-icon>
+        <ion-icon (click)="createTour(detail.id)" name="navigate-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
