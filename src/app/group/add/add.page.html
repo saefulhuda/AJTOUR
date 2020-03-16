@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content fullscreen>
     <ion-list *ngIf="member.id">
-        <ion-item (click)="showMember(member.id)">
+        <ion-item>
             <ion-avatar slot="start">
                 <img src="{{member.path_image}}">
             </ion-avatar>
@@ -13,6 +13,9 @@
                 <h3>{{member.name}}</h3>
                 <p>{{member.email}}</p>
             </ion-label>
+            <ion-button (click)="addMember(member.email)">
+                <ion-icon name="person-add-outline"></ion-icon>
+            </ion-button>
         </ion-item>
     </ion-list>
 </ion-content>

@@ -10,6 +10,6 @@ export class HttpRequestService {
   constructor(private http: HttpClient) { }
 
   getRequest(param) {
-    return this.http.get(URL+param);
+    return this.http.get<any>(URL+param);
   }
 }

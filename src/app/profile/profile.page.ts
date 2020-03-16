@@ -19,11 +19,8 @@ profileName: string;
     let param = JSON.stringify({id:'12'});
     this.req.getRequest("live/get_user_by_id?request="+param+"&api_key="+TOKEN).subscribe(data => {
       if (data.status == 1) {
-        console.log(data.result.image);
         this.profile = data.result;
         this.profileName = data.result.name.toUpperCase();
-      } else {
-        console.log(data.message);
       }
     });
   }
