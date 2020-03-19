@@ -14,11 +14,11 @@ const TOKEN = environment.api_token
 })
 
 export class AuthPage implements OnInit {
-email: string;
-password: string;
-lat: any;
-long: any;
-  constructor(public req: HttpRequestService, private route: Router, public toastController: ToastController, private storage: Storage, private geolocation: Geolocation) { 
+  email: string;
+  password: string;
+  lat: any;
+  long: any;
+  constructor(public req: HttpRequestService, private route: Router, public toastController: ToastController, private storage: Storage, private geolocation: Geolocation) {
 
   }
 
@@ -31,20 +31,27 @@ long: any;
   }
 
   doLogin() {
-    let param = JSON.stringify({email: this.email, password: this.password, lat: this.lat, long: this.long});
-    let url:string = "auth/user_login?request="+param+"&api_key="+TOKEN;
-    this.req.getRequest(url).subscribe(data => 
-      {
-        if(data.status == 1) {
+    if (this.email == null) {
+      this.showToast('Silahkan masukan email anda', 2000, 'top');
+    } else if (this.password == null) {
+      this.showToast('Silahkan masukan password', 2000, 'top');
+    } else if (this.lat == null || this.long == null) {
+      this.showToast('Silahkan hidupkan GPS', 2000, 'top');
+    } else {
+      let param = JSON.stringify({ email: this.email, password: this.password, lat: this.lat, long: this.long });
+      let url: string = "auth/user_login?request=" + param + "&api_key=" + TOKEN;
+      this.req.getRequest(url).subscribe(data => {
+        if (data.status == 1) {
           if (this.storage.set('session', data.result)) {
-          console.log('Catat session dan login');
-          this.route.navigate(['/live']);
+            console.log('Catat session dan login');
+            this.route.navigate(['/live']);
           };
         } else {
           this.showToast(data.message, 2000, 'top');
         }
       }
       );
+    }
   }
 
   toRegister() {

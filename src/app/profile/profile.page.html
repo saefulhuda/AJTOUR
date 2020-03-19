@@ -5,9 +5,9 @@
   </ion-refresher>
   <ion-item>
     <ion-avatar slot="start">
-      <img src="{{profile.path_image}}">
+      <img (click)="takePicture()" src="{{profile.path_image}}">
     </ion-avatar>
-    <ion-label>{{profileName}}</ion-label>
+    <ion-label>{{profile.name}}</ion-label>
   </ion-item>
   <ion-list>
     <ion-item>

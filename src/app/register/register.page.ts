@@ -11,26 +11,33 @@ const TOKEN = environment.api_token;
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-email: any;
-password: any;
-phone: any;
+  email: any;
+  password: any;
+  phone: any;
   constructor(public req: HttpRequestService, private route: Router, private toastController: ToastController) { }
 
   ngOnInit() {
   }
 
   doRegister() {
-    let param = JSON.stringify({email: this.email, phone: this.phone, password: this.password});
-    let url:string = "auth/user_register?request="+param+"&api_key="+TOKEN;
-    this.req.getRequest(url).subscribe(data => 
-      {
-        if(data.status == 1) {
+    if (this.email == null) {
+      this.showToast('Silahkan isi alamat email', 2000, 'top');
+    } else if (this.phone == null) {
+      this.showToast('Silahkan isi nomor telpon', 2000, 'top');
+    } else if (this.password == null) {
+      this.showToast('Silahkan isi password', 2000, 'top')
+    } else {
+      let param = JSON.stringify({ email: this.email, phone: this.phone, password: this.password });
+      let url: string = "auth/user_register?request=" + param + "&api_key=" + TOKEN;
+      this.req.getRequest(url).subscribe(data => {
+        if (data.status == 1) {
           this.route.navigate(['/auth']);
         } else {
           this.showToast(data.message, 2000, 'top');
         }
       }
       );
+    }
   }
 
   doLogin() {

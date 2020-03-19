@@ -3,6 +3,7 @@ import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -14,12 +15,14 @@ export class ProfilePage implements OnInit {
   profile: any;
   profileName: string;
   session: any;
-  constructor(public req: HttpRequestService, private route: Router, private storage: Storage) { 
+  cameraData: string;
+  constructor(public req: HttpRequestService, private route: Router, private storage: Storage, private camera: Camera) {
+    this.session = []; 
     this.storage.get('session').then(data => {
       if (data==undefined) {
         this.route.navigate(['auth']);
       } else {
-        this.session = data.id;
+        this.session = data;
         this.ngOnInit();
       }
     });
@@ -27,13 +30,7 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.profile = [];
-    let param = JSON.stringify({ id: this.session});
-    this.req.getRequest("live/get_user_by_id?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
-      if (data.status == 1) {
-        this.profile = data.result;
-        this.profileName = data.result.name.toUpperCase();
-      }
-    });
+        this.profile = this.session;
   }
 
   doLogout(){
@@ -49,6 +46,20 @@ export class ProfilePage implements OnInit {
       console.log('Async operation has ended');
       event.target.complete();
     }, 2000);
+  }
+  
+  takePicture() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then(result => {
+      console.log(result);
+    });
   }
 
 }
