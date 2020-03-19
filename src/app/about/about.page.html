@@ -1,4 +1,8 @@
 <ion-content fullscreen>
+  <!-- Custom Refresher Content -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list>
     <ion-list-header>
       About Company
@@ -6,8 +10,7 @@
 
     <ion-item>
       <ion-avatar slot="start">
-        <img
-          src="{{company.image}}">
+        <img src="{{company.image}}">
       </ion-avatar>
       <ion-label>
         <h3>{{company.name}}</h3>

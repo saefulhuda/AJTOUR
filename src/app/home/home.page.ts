@@ -3,6 +3,8 @@ import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { stringify } from 'querystring';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -13,7 +15,16 @@ const TOKEN = environment.api_token;
 export class HomePage implements OnInit {
   groups: any;
   ads: any;
-  constructor(public req: HttpRequestService, public route: Router, public navCtrl: NavController) {
+  session: any;
+  constructor(public req: HttpRequestService, public route: Router, public navCtrl: NavController, private storage: Storage) {
+    this.storage.get('session').then(data => {
+      if (data == undefined) {
+        this.route.navigate(['auth']);
+      } else {
+        this.session = data.id;
+        this.ngOnInit();
+      }
+    });
   }
 
   ngOnInit() {
@@ -27,21 +38,8 @@ export class HomePage implements OnInit {
         console.log(data.message);
       }
     });
-
-    this.ads = [
-      {
-        'title': 'Ads 1',
-        'image': 'https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg',
-        'desc': 'Landscape HD wallpaper | 1920x1080 | #38728 Temukan pin ini dan lainnya di Food and drink oleh Frantz Bricourt. Tag Landscape Wallpapers      Hd Nature Wallpapers      Hd Wallpapers 1080p      Nature Landscape      1080p Wallpaper      Beach Landscape      Desktop Backgrounds Desktop Wallpapers      Mobile Wallpaper'
-      },
-      {
-        'title': 'Ads 2',
-        'image': 'https://wallpapercave.com/wp/jiJZXEJ.jpg',
-        'desc': 'WallpaperCave is an online community of desktop wallpapers enthusiasts. Join now to share and explore tons of collections of awesome wallpapers.'
-      }
-    ];
     this.groups = [];
-    let param = JSON.stringify({ user_id: '12' });
+    let param = JSON.stringify({ user_id: this.session });
     this.req.getRequest("live/read_all_group_by_user_id?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
       // console.log(data);
       if (data.status == 1) {
@@ -58,6 +56,15 @@ export class HomePage implements OnInit {
 
   createGroup() {
     this.navCtrl.navigateForward(['live/group/create/app']);
+  }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.ngOnInit();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
   }
 
 }

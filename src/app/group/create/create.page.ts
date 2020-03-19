@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpRequestService } from 'src/app/http-request.service';
 import { environment } from 'src/environments/environment';
 import { NavController, ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -12,14 +14,24 @@ const TOKEN = environment.api_token;
 export class CreatePage implements OnInit {
 name: string;
 desc: string;
-  constructor(private req: HttpRequestService, public navCtrl: NavController, private toastController: ToastController) { }
+session: any;
+  constructor(private route: Router, private req: HttpRequestService, public navCtrl: NavController, private toastController: ToastController, private storage: Storage) {
+    this.storage.get('session').then(data => {
+      if (data==undefined) {
+        this.route.navigate(['auth']);
+      } else {
+        this.session = data.email;
+        this.SubmitCreateGroup();
+      }
+    });
+   }
 
   ngOnInit() {
     console.log('Create');
   }
 
   SubmitCreateGroup() {
-    let param = JSON.stringify({group_name:this.name, group_desc:this.desc, group_own:'saefulhuda@email.co.id', group_logo:'http://localhost/api.ajcomm.id/resources/images/users/thumb.png'});
+    let param = JSON.stringify({group_name:this.name, group_desc:this.desc, group_own:this.session, group_logo:'http://localhost/api.ajcomm.id/resources/images/users/thumb.png'});
     this.req.getRequest("live/create_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
       // console.log(data);
       if (data.status == 1) {

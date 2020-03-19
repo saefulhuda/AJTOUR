@@ -16,6 +16,7 @@ id;
    }
 
   ngOnInit() {
+    console.log(this.id);
   }
 
   submitCreateTour() {

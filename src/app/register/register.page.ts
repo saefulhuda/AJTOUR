@@ -11,16 +11,16 @@ const TOKEN = environment.api_token;
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  email: string;
-  password: any;
-  phone: number;
+email: any;
+password: any;
+phone: any;
   constructor(public req: HttpRequestService, private route: Router, private toastController: ToastController) { }
 
   ngOnInit() {
   }
 
   doRegister() {
-    let param = JSON.stringify({phone:this.phone,email: this.email, password: this.password});
+    let param = JSON.stringify({email: this.email, phone: this.phone, password: this.password});
     let url:string = "auth/user_register?request="+param+"&api_key="+TOKEN;
     this.req.getRequest(url).subscribe(data => 
       {

@@ -11,30 +11,28 @@
       <ion-card-title>Silahkan login</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <form (submit)="doLogin($event)">
         <ion-list lines="full" class="ion-no-margin ion-no-padding">
           <ion-item>
             <ion-label position="stacked">Email <ion-text color="danger">*</ion-text>
             </ion-label>
-            <ion-input required type="text" [(ngModel)]="todo.email" name="email"></ion-input>
+            <ion-input required type="text" [(ngModel)]="email"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
             </ion-label>
-            <ion-input required type="password" [(ngModel)]="todo.password" name="password"></ion-input>
+            <ion-input required type="password" [(ngModel)]="password"></ion-input>
           </ion-item>
         </ion-list>
 
         <div class="ion-padding">
           <ion-row>
             <ion-col col-6>
-              <ion-button color="dark" fill="outline" expand="block" type="submit" class="ion-no-margin">Masuk
+              <ion-button color="dark" fill="outline" expand="block" (click)="doLogin()" class="ion-no-margin">Masuk
               </ion-button>
             </ion-col>
           </ion-row>
         </div>
-      </form>
       <div class="ion-padding">
         <ion-row>
           <ion-col col-12>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
+
 const TOKEN = environment.api_token;
 @Component({
   selector: 'app-about',
@@ -34,9 +35,13 @@ company: any;
     });
   }
 
-  toLogout() {
-    this.route.navigate(['/auth']);
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.ngOnInit();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
   }
-
 
 }

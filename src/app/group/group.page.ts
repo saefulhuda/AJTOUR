@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -13,7 +14,17 @@ const TOKEN = environment.api_token;
 export class GroupPage implements OnInit {
 member: any;
 detail: any;
-  constructor(private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController) { }
+session: any;
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController, private storage: Storage) {
+    this.storage.get('session').then(data => {
+      if (data==undefined) {
+        this.route.navigate(['auth']);
+      } else {
+        this.session = data.id;
+        this.ngOnInit();
+      }
+    });
+   }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
