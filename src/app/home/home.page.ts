@@ -17,17 +17,17 @@ export class HomePage implements OnInit {
   ads: any;
   session: any;
   constructor(public req: HttpRequestService, public route: Router, public navCtrl: NavController, private storage: Storage) {
+  }
+
+  ngOnInit() {
     this.storage.get('session').then(data => {
       if (data == undefined) {
         this.route.navigate(['auth']);
       } else {
         this.session = data.id;
-        this.ngOnInit();
+        this.showGroup();
       }
     });
-  }
-
-  ngOnInit() {
     this.ads = [];
     this.req.getRequest("services/get_all_ads?api_key=" + TOKEN).subscribe(data => {
       if (data.status == 1) {
@@ -38,6 +38,9 @@ export class HomePage implements OnInit {
         console.log(data.message);
       }
     });
+  }
+
+  showGroup() {
     this.groups = [];
     let param = JSON.stringify({ user_id: this.session });
     this.req.getRequest("live/read_all_group_by_user_id?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
@@ -59,6 +62,7 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(event) {
+    this.navCtrl.navigateRoot(['live']);
     console.log('Begin async operation');
     this.ngOnInit();
     setTimeout(() => {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpRequestService } from 'src/app/http-request.service';
 import { environment } from 'src/environments/environment';
-import { ToastController } from '@ionic/angular';
+import { AppServiceService } from 'src/app/app-service.service';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -14,7 +14,7 @@ export class AddPage implements OnInit {
 key: any;
 member: any;
 groupId: number;
-  constructor(private activatedRoute: ActivatedRoute, public req: HttpRequestService, public toastController: ToastController) { 
+  constructor(private activatedRoute: ActivatedRoute, public req: HttpRequestService, public app: AppServiceService, private route: Router) { 
     this.activatedRoute.params.subscribe((params) => {
       // console.log(params.id);
       this.groupId = params.id;
@@ -32,6 +32,8 @@ groupId: number;
         for (let t in data.result) {
           this.member = data.result;
         }
+      } else if (data.status == 0 && data.error == 3) {
+        this.app.showToast('Teman anda dengan email '+this.key+' tidak ditemukan', 4000, 'middle');
       }
     });
   }
@@ -40,21 +42,12 @@ groupId: number;
     let param = JSON.stringify({friend_mail:email, group_id:this.groupId})
     this.req.getRequest("live/add_friend_to_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
       if (data.status == 1) {
-        this.showToast(email+' berhasi ditambahkan', 2000, 'top');
+        this.app.showToast(email+' berhasil ditambahkan', 4000, 'top', 'success');
+        this.route.navigate(['live/group/',this.groupId]);
       } else {
-        this.showToast(data.message, 2000, top);
+        this.app.showToast(data.message, 2000, top);
       }
     });
-  }
-
-  async showToast(mess: string, dur: number = 2000, pos: any) {
-    let toast = await this.toastController.create({
-      message: mess,
-      duration: dur,
-      position: pos,
-      color: 'danger'
-    });
-    return toast.present();
   }
 
 }

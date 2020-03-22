@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpRequestService } from '../http-request.service';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AppServiceService } from '../app-service.service';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -13,19 +13,22 @@ const TOKEN = environment.api_token;
 export class RegisterPage implements OnInit {
   email: any;
   password: any;
+  passconf: any;
   phone: any;
-  constructor(public req: HttpRequestService, private route: Router, private toastController: ToastController) { }
+  constructor(public req: HttpRequestService, private route: Router, private app: AppServiceService) { }
 
   ngOnInit() {
   }
 
   doRegister() {
     if (this.email == null) {
-      this.showToast('Silahkan isi alamat email', 2000, 'top');
+      this.app.showToast('Silahkan isi alamat email', 2000, 'top');
     } else if (this.phone == null) {
-      this.showToast('Silahkan isi nomor telpon', 2000, 'top');
+      this.app.showToast('Silahkan isi nomor telpon', 2000, 'top');
     } else if (this.password == null) {
-      this.showToast('Silahkan isi password', 2000, 'top')
+      this.app.showToast('Silahkan isi password', 2000, 'top')
+    } else if (this.passconf != this.password) {
+      this.app.showToast('Konfimasi password tidak sama', 2000, 'top');
     } else {
       let param = JSON.stringify({ email: this.email, phone: this.phone, password: this.password });
       let url: string = "auth/user_register?request=" + param + "&api_key=" + TOKEN;
@@ -33,7 +36,7 @@ export class RegisterPage implements OnInit {
         if (data.status == 1) {
           this.route.navigate(['/auth']);
         } else {
-          this.showToast(data.message, 2000, 'top');
+          this.app.showToast(data.message, 2000, 'top');
         }
       }
       );
@@ -42,16 +45,6 @@ export class RegisterPage implements OnInit {
 
   doLogin() {
     this.route.navigate(['/auth']);
-  }
-
-  async showToast(mess: string, dur: number = 2000, pos: any) {
-    let toast = await this.toastController.create({
-      message: mess,
-      duration: dur,
-      position: pos,
-      color: 'danger'
-    });
-    return toast.present();
   }
 
 }

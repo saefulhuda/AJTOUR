@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AppServiceService } from '../app-service.service';
 
 const TOKEN = environment.api_token
 @Component({
@@ -18,7 +18,7 @@ export class AuthPage implements OnInit {
   password: string;
   lat: any;
   long: any;
-  constructor(public req: HttpRequestService, private route: Router, public toastController: ToastController, private storage: Storage, private geolocation: Geolocation) {
+  constructor(public app: AppServiceService, public req: HttpRequestService, private route: Router, private storage: Storage, private geolocation: Geolocation) {
 
   }
 
@@ -32,11 +32,11 @@ export class AuthPage implements OnInit {
 
   doLogin() {
     if (this.email == null) {
-      this.showToast('Silahkan masukan email anda', 2000, 'top');
+      this.app.showToast('Silahkan masukan email anda', 2000, 'top');
     } else if (this.password == null) {
-      this.showToast('Silahkan masukan password', 2000, 'top');
+      this.app.showToast('Silahkan masukan password', 2000, 'top');
     } else if (this.lat == null || this.long == null) {
-      this.showToast('Silahkan hidupkan GPS', 2000, 'top');
+      this.app.showToast('Silahkan hidupkan GPS', 2000, 'top');
     } else {
       let param = JSON.stringify({ email: this.email, password: this.password, lat: this.lat, long: this.long });
       let url: string = "auth/user_login?request=" + param + "&api_key=" + TOKEN;
@@ -45,9 +45,10 @@ export class AuthPage implements OnInit {
           if (this.storage.set('session', data.result)) {
             console.log('Catat session dan login');
             this.route.navigate(['/live']);
+            this.app.showToast('Selamat datang di aplikasi ajtour indonesia', 8000, 'middle', 'primary');
           };
         } else {
-          this.showToast(data.message, 2000, 'top');
+          this.app.showToast(data.message, 2000, 'top');
         }
       }
       );
@@ -56,15 +57,5 @@ export class AuthPage implements OnInit {
 
   toRegister() {
     this.route.navigate(['/register']);
-  }
-
-  async showToast(mess: string, dur: number = 2000, pos: any) {
-    let toast = await this.toastController.create({
-      message: mess,
-      duration: dur,
-      position: pos,
-      color: 'danger'
-    });
-    return toast.present();
   }
 }

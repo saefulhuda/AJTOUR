@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -11,7 +12,7 @@ const TOKEN = environment.api_token;
 export class StoryPage implements OnInit {
   stories: any;
   user: any;
-  constructor(public req: HttpRequestService) { }
+  constructor(public req: HttpRequestService, private route: Router) { }
 
   ngOnInit() {
     this.stories = [];
@@ -38,6 +39,9 @@ export class StoryPage implements OnInit {
       console.log('Async operation has ended');
       event.target.complete();
     }, 2000);
+  }
+
+  doPostStory() {
   }
 
 }

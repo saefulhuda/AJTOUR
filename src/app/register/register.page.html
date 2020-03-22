@@ -6,9 +6,10 @@
 
 <ion-content>
   <ion-card>
-    <ion-card-header>
+    <img src="http://api.ajcomm.id/resources/images/banners/ajtour.png" />
+    <!-- <ion-card-header>
       <ion-card-title>Form Daftar</ion-card-title>
-    </ion-card-header>
+    </ion-card-header> -->
     <ion-card-content>
       <ion-list lines="full" class="ion-no-margin ion-no-padding">
         <ion-item>
@@ -27,6 +28,12 @@
           <ion-label position="stacked">Password <ion-text color="danger">*</ion-text>
           </ion-label>
           <ion-input required type="password" [(ngModel)]="password"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Konfirmasi Password<ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required type="password" [(ngModel)]="passconf"></ion-input>
         </ion-item>
       </ion-list>
 

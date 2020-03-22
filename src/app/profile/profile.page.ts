@@ -30,7 +30,10 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.profile = [];
-        this.profile = this.session;
+    let param = JSON.stringify({id: this.session.id});
+    this.req.getRequest('live/get_user_by_id?request='+param+'&api_key='+TOKEN).subscribe(data => {
+      this.profile = this.session;
+    });
   }
 
   doLogout(){
@@ -59,6 +62,19 @@ export class ProfilePage implements OnInit {
 
     this.camera.getPicture(options).then(result => {
       console.log(result);
+    });
+  }
+
+  takeCamera() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+    this.camera.getPicture(options).then(result => {
+      console.log('data:image/jpeg;base64,'+result);
     });
   }
 

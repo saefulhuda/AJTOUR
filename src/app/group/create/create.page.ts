@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpRequestService } from 'src/app/http-request.service';
 import { environment } from 'src/environments/environment';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
+import { AppServiceService } from 'src/app/app-service.service';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -15,7 +16,7 @@ export class CreatePage implements OnInit {
 name: string;
 desc: string;
 session: any;
-  constructor(private route: Router, private req: HttpRequestService, public navCtrl: NavController, private toastController: ToastController, private storage: Storage) {
+  constructor(private route: Router, private req: HttpRequestService, public navCtrl: NavController, private app: AppServiceService, private storage: Storage) {
     this.storage.get('session').then(data => {
       if (data==undefined) {
         this.route.navigate(['auth']);
@@ -31,25 +32,19 @@ session: any;
   }
 
   SubmitCreateGroup() {
-    let param = JSON.stringify({group_name:this.name, group_desc:this.desc, group_own:this.session, group_logo:'http://localhost/api.ajcomm.id/resources/images/users/thumb.png'});
+    let param = JSON.stringify({group_name:this.name, group_desc:this.desc, group_own:this.session, group_logo:'http://api.ajcomm.id/resources/images/groups/thumb.png'});
     this.req.getRequest("live/create_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
       // console.log(data);
       if (data.status == 1) {
         this.navCtrl.navigateForward(['live']);
       } else {
-        this.showToast(data.message, 2000, 'middle');
+        this.app.showToast(data.message, 2000, 'middle');
       }
     });
   }
 
-  async showToast(mess: string, dur: number = 2000, pos: any) {
-    let toast = await this.toastController.create({
-      message: mess,
-      duration: dur,
-      position: pos,
-      color: 'danger'
-    });
-    return toast.present();
+  doTakePicture() {
+    console.log('Take Logo');
   }
 
 }
