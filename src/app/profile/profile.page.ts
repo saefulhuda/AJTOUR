@@ -78,4 +78,8 @@ export class ProfilePage implements OnInit {
     });
   }
 
+  updateProfile() {
+    this.route.navigate(['/live/profile/update']);
+  }
+
 }

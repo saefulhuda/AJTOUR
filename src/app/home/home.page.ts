@@ -43,7 +43,8 @@ export class HomePage implements OnInit {
   showGroup() {
     this.groups = [];
     let param = JSON.stringify({ user_id: this.session });
-    this.req.getRequest("live/read_all_group_by_user_id?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
+    // this.req.getRequest("live/read_all_group_by_user_id?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
+    this.req.getRequest("live/get_all_group?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
       // console.log(data);
       if (data.status == 1) {
         for (let list in data.result) {

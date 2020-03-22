@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
 import { NativeGeocoder, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { Map, latLng, tileLayer, Layer, marker, Draggable} from 'leaflet';
+import { Map, tileLayer, marker, icon, Marker} from 'leaflet';
 import { NavController } from '@ionic/angular';
 // import {
 //   GoogleMaps,
@@ -117,10 +117,26 @@ export class CreatePage {
   }
 
   addMarker(lat: number, long: number, image: string, name: string) {
+    const iconRetinaUrl = 'assets/marker-icon-2x.png';
+    const iconUrl = 'assets/marker-icon.png';
+    const shadowUrl = 'assets/marker-shadow.png';
+    const iconDefault = icon({
+      iconRetinaUrl,
+      iconUrl,
+      shadowUrl,
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      tooltipAnchor: [16, -28],
+      shadowSize: [41, 41]
+    });
+
     let popUp = '<img src="' + image + '"><hr><p>' + name + '</p>';
-    marker([lat, long]).addTo(this.map)
+    let newMarker = marker([lat, long], {draggable: 
+      true}).addTo(this.map)
       .bindPopup(popUp)
       .openPopup();
+      Marker.prototype.options.icon = iconDefault;
   }
 
   submitCreateTour() {

@@ -21,7 +21,19 @@
   </ion-list>
   <ion-list>
     <ion-grid>
-      <ion-button (click)="doLogout()" color="dark" expand="block">Keluar</ion-button>
+      <ion-row>
+        <ion-col col-6>
+          <ion-button (click)="updateProfile()" color="dark" expand="block">
+            Update
+          </ion-button>
+        </ion-col>
+        <ion-col col-6>
+          <ion-button (click)="doLogout()" color="dark" expand="block">
+            Keluar
+            <ion-icon name="enter-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </ion-list>
 </ion-content>
