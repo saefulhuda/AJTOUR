@@ -15,6 +15,7 @@ export class GroupPage implements OnInit {
 member: any;
 detail: any;
 session: any;
+sumMember: any;
   constructor(private route: Router, private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController, private storage: Storage) {
     this.storage.get('session').then(data => {
       if (data==undefined) {
@@ -42,6 +43,7 @@ session: any;
         if (data.status == 1) {
           this.member = data.result;
         }
+        this.sumMember = data.result.length;
       });
     })
   }

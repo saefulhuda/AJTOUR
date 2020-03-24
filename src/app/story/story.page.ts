@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { AppServiceService } from '../app-service.service';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -12,7 +13,7 @@ const TOKEN = environment.api_token;
 export class StoryPage implements OnInit {
   stories: any;
   user: any;
-  constructor(public req: HttpRequestService, private route: Router) { }
+  constructor(public req: HttpRequestService, private route: Router, private app: AppServiceService) { }
 
   ngOnInit() {
     this.stories = [];
@@ -42,6 +43,28 @@ export class StoryPage implements OnInit {
   }
 
   doPostStory() {
+    let buttons = [{
+      text: 'Camera',
+      role: 'destructive',
+      icon: 'camera',
+      handler: () => {
+        console.log('Delete clicked');
+      }
+    }, {
+      text: 'File Manager',
+      icon: 'folder',
+      handler: () => {
+        console.log('Share clicked');
+      }
+    }, {
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    }]
+    this.app.showActionSheet(buttons);
   }
 
 }

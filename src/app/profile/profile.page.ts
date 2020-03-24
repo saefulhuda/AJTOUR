@@ -61,7 +61,7 @@ export class ProfilePage implements OnInit {
     }
 
     this.camera.getPicture(options).then(result => {
-      console.log(result);
+      let base64Image = 'data:image/jpeg;base64,' + result;
     });
   }
 

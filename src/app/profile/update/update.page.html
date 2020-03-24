@@ -2,20 +2,28 @@
   <ion-card>
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
       <ion-item>
+          <img class="avatar" src="{{profile.path_image}}">
+      </ion-item>
+      <ion-item>
         <ion-label position="stacked">Name <ion-text color="danger"></ion-text>
         </ion-label>
-        <ion-input clearInput value="clear me" placeholder="Enter Input"></ion-input>
+        <ion-input clearInput value="{{profile.name}}" placeholder="Enter Input"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Email addres <ion-text color="danger"></ion-text>
         </ion-label>
-        <ion-input clearInput value="clear me" placeholder="Enter Input"></ion-input>
+        <ion-input clearInput value="{{profile.email}}" placeholder="Enter Input"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Phone </ion-label>
-        <ion-input clearInput value="clear me" placeholder="Enter Input"></ion-input>
+        <ion-input clearInput value="{{profile.phone}}" placeholder="Enter Input"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Password </ion-label>
+        <ion-input clearInput type="password" placeholder="Enter Input"></ion-input>
       </ion-item>
       <ion-item>
         <ion-grid>
