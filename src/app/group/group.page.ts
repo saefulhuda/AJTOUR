@@ -57,4 +57,8 @@ sumMember: any;
     // console.log(id);
   }
 
+  showProfile(id) {
+    this.navCtrl.navigateForward(['/live/profile/general/'+id])
+  }
+
 }

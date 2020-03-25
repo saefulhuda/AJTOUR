@@ -1,0 +1,41 @@
+<ion-content>
+    <ion-item>
+        <ion-grid>
+            <ion-row>
+                <ion-col size="12" style="text-align: center;">
+                    <img class="image-profile" alt="{{profile.name}}" src="{{profile.path_image}}">
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-label>
+                        <div style="text-align: center;">
+                            <h2>{{profile.name}}</h2>
+                            <h3>{{profile.phone}}</h3>
+                        </div>
+                        <hr>
+                        <p>{{profile.note}}</p>
+                    </ion-label>
+                </ion-col>
+            </ion-row>
+            <hr>
+            <ion-row style="text-align: center;">
+                <ion-col size="4">
+                    <ion-button color="dark">
+                        <ion-icon name="mail-open-outline"></ion-icon>chat
+                    </ion-button>
+                </ion-col>
+                <ion-col size="4">
+                    <ion-button color="dark" fill="outline">
+                        <ion-icon name="search-outline"></ion-icon>search
+                    </ion-button>
+                </ion-col>
+                <ion-col size="4">
+                    <ion-button color="dark">
+                        <ion-icon name="call-outline"></ion-icon>call
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-item>
+</ion-content>

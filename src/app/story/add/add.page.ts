@@ -3,6 +3,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AppServiceService } from 'src/app/app-service.service';
 import { HttpRequestService } from 'src/app/http-request.service';
 import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add',
@@ -14,7 +15,7 @@ export class AddPage implements OnInit {
   image: any;
   title: any;
   description: any;
-  constructor(private camera: Camera, private app: AppServiceService, private req: HttpRequestService, private storage: Storage) { }
+  constructor(private camera: Camera, private app: AppServiceService, private req: HttpRequestService, private storage: Storage, private route: Router) { }
 
   ngOnInit() {
     this.storage.get('session').then(data => {
@@ -72,6 +73,7 @@ export class AddPage implements OnInit {
     this.req.postRequest('live/post_story', param).subscribe(data => {
       console.log(data);
     });
+    this.route.navigate(['/live/story']);
   }
 
 }

@@ -31,7 +31,7 @@
       <ion-avatar slot="start">
         <img alt="{{list.name}}" src="{{list.path_image}}">
       </ion-avatar>
-      <ion-label>
+      <ion-label (click)="showProfile(list.user_id)">
         <h2>{{list.name}}</h2>
         <h3>{{list.phone}}</h3>
         <p>{{list.email}}</p>
