@@ -22,7 +22,7 @@
     "@ionic-native/camera": "^5.22.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/file": "^5.22.0",
-    "@ionic-native/file-transfer": "^5.22.0",
+    "@ionic-native/file-transfer": "^5.23.0",
     "@ionic-native/geolocation": "^5.22.0",
     "@ionic-native/google-maps": "^5.5.0",
     "@ionic-native/http": "^5.22.0",

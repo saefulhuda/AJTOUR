@@ -11,7 +11,7 @@
             <ion-slides>
                 <ion-slide *ngFor="let list of ads">
                     <div class="slide">
-                        <img src="{{list.image}}" />
+                        <img alt="{{list.title}}" src="{{list.image}}" />
                         <h2>{{list.title}}</h2>
                         <p>{{list.desc}}</p>
                     </div>

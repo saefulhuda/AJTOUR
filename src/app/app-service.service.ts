@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ToastController, AlertController } from '@ionic/angular';
-import { ActionSheetController } from '@ionic/angular';
+import { ToastController, AlertController, ActionSheetController} from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppServiceService {
-
-  constructor(public toastController: ToastController, public alertCtrl: AlertController,public actionSheetController: ActionSheetController) { }
+  constructor(public toastController: ToastController, public alertCtrl: AlertController, public actionSheetController: ActionSheetController) { }
 
   async showToast(mess: string, dur: number = 2000, pos: any, color: any ='danger') {
     let toast = await this.toastController.create({

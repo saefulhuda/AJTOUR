@@ -38,12 +38,6 @@ export class HomePage implements OnInit {
         console.log(data.message);
       }
     });
-    let param = new URLSearchParams();
-    param.set('api_key',TOKEN);
-    console.log(param.set('api','foo'));
-    this.req.postRequest("services/get_all_services",param).subscribe(data => {
-      console.log(data);
-    });
   }
 
   showGroup() {

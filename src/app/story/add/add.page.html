@@ -1,2 +1,54 @@
 <ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>Post Story</ion-card-subtitle>
+        </ion-card-header>
+        <hr>
+        <ion-card-content>
+            <img *ngIf="image != null" [src]="image">
+        </ion-card-content>
+        <hr>
+        <ion-grid>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-input clearInput placehoder="Title" [(ngModel)]="title"></ion-input>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <ion-grid>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-input clearInput placehoder="Description" [(ngModel)]="description"></ion-input>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <hr>
+        <ion-grid>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-input type="file" clearInput value="Description" [(ngModel)]="file"></ion-input>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <hr>
+        <ion-grid>
+            <ion-row>
+                <ion-col size="4">
+                    <ion-button (click)="choiceFile()" color="dark" size="small">
+                        Ambil File
+                        <ion-icon name="albums-outline"></ion-icon>
+                    </ion-button>
+                </ion-col>
+                <ion-col size="4">
+
+                </ion-col>
+                <ion-col size="4">
+                    <ion-button (click)="postStory()" color="dark" size="small">
+                        Reset
+                        <ion-icon name="reload-outline"></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-card>
 </ion-content>

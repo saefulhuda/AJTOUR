@@ -43,28 +43,7 @@ export class StoryPage implements OnInit {
   }
 
   doPostStory() {
-    let buttons = [{
-      text: 'Camera',
-      role: 'destructive',
-      icon: 'camera',
-      handler: () => {
-        console.log('Delete clicked');
-      }
-    }, {
-      text: 'File Manager',
-      icon: 'folder',
-      handler: () => {
-        console.log('Share clicked');
-      }
-    }, {
-      text: 'Cancel',
-      icon: 'close',
-      role: 'cancel',
-      handler: () => {
-        console.log('Cancel clicked');
-      }
-    }]
-    this.app.showActionSheet(buttons);
+    this.route.navigate(['/live/story/add']);
   }
 
 }
