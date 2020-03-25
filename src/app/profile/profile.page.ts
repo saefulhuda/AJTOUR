@@ -34,7 +34,7 @@ export class ProfilePage implements OnInit {
     this.profile = [];
     let param = JSON.stringify({id: this.session.id});
     this.req.getRequest('live/get_user_by_id?request='+param+'&api_key='+TOKEN).subscribe(data => {
-      this.profile = this.session;
+      this.profile = data.result;
     });
   }
 
@@ -47,6 +47,7 @@ export class ProfilePage implements OnInit {
 
   doRefresh(event) {
     console.log('Begin async operation');
+    this.ngOnInit();
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();

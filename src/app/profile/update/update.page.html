@@ -4,26 +4,25 @@
       <ion-item>
           <img class="avatar" src="{{profile.path_image}}">
       </ion-item>
+
       <ion-item>
-        <ion-label position="stacked">Name <ion-text color="danger"></ion-text>
-        </ion-label>
-        <ion-input clearInput value="{{profile.name}}" placeholder="Enter Input"></ion-input>
+        <ion-label position="stacked">Email addres <ion-text color="danger"></ion-text></ion-label>
+        <ion-input disabled value="{{profile.email}}" placeholder="Enter Input" [(ngModel)]="email"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Email addres <ion-text color="danger"></ion-text>
-        </ion-label>
-        <ion-input clearInput value="{{profile.email}}" placeholder="Enter Input"></ion-input>
+        <ion-label position="stacked">Name <ion-text color="danger"></ion-text></ion-label>
+        <ion-input clearInput value="{{profile.name}}" placeholder="Enter Input" [(ngModel)]="name"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Phone </ion-label>
-        <ion-input clearInput value="{{profile.phone}}" placeholder="Enter Input"></ion-input>
+        <ion-input (change)="alertPhone()" inputmode="tel" pattern="tel" clearInput value="{{profile.phone}}" placeholder="Enter Input" [(ngModel)]="phone"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Password </ion-label>
-        <ion-input clearInput type="password" placeholder="Enter Input"></ion-input>
+        <ion-input clearInput type="password" placeholder="Enter Input" (change)="alertPassword()" [(ngModel)]="password"></ion-input>
       </ion-item>
       <ion-item>
         <ion-grid>
