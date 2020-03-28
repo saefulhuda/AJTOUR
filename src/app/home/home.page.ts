@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { stringify } from 'querystring';
+import { AppServiceService } from '../app-service.service';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -16,10 +17,7 @@ export class HomePage implements OnInit {
   groups: any;
   ads: any;
   session: any;
-  constructor(public req: HttpRequestService, public route: Router, public navCtrl: NavController, private storage: Storage) {
-  }
-
-  ngOnInit() {
+  constructor(public req: HttpRequestService, public route: Router, public navCtrl: NavController, private storage: Storage, private app: AppServiceService) {
     this.storage.get('session').then(data => {
       if (data == undefined) {
         this.route.navigate(['auth']);
@@ -28,6 +26,9 @@ export class HomePage implements OnInit {
         this.showGroup();
       }
     });
+  }
+
+  ngOnInit() {
     this.ads = [];
     this.req.getRequest("services/get_all_ads?api_key=" + TOKEN).subscribe(data => {
       if (data.status == 1) {
@@ -44,7 +45,7 @@ export class HomePage implements OnInit {
     this.groups = [];
     let param = JSON.stringify({ user_id: this.session });
     // this.req.getRequest("live/read_all_group_by_user_id?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
-    this.req.getRequest("live/get_all_group?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
+    this.req.getRequest("apptour/get_all_group?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
       // console.log(data);
       if (data.status == 1) {
         for (let list in data.result) {
@@ -63,7 +64,8 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(event) {
-    this.navCtrl.navigateRoot(['live']);
+    // this.navCtrl.navigateRoot(['live']);
+    this.ngOnInit();
     console.log('Begin async operation');
     this.ngOnInit();
     setTimeout(() => {
@@ -71,6 +73,5 @@ export class HomePage implements OnInit {
       event.target.complete();
     }, 2000);
   }
-
 }
 

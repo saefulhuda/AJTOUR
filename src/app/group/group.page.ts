@@ -33,13 +33,13 @@ sumMember: any;
       this.detail = [] ;
       // console.log("Params :", params.id);
       let param = JSON.stringify({group_id:params.id});
-      this.req.getRequest("live/read_group_detail_by_id?request="+param+"&api_key="+TOKEN).subscribe(data => {
+      this.req.getRequest("apptour/read_group_detail_by_id?request="+param+"&api_key="+TOKEN).subscribe(data => {
         // console.log(data);
         if (data.status == 1) {
           this.detail = data.result;
         }
       });
-      this.req.getRequest("live/read_member_in_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
+      this.req.getRequest("apptour/read_member_in_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
         if (data.status == 1) {
           this.member = data.result;
         }

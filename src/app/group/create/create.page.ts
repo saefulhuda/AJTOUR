@@ -33,7 +33,7 @@ session: any;
 
   SubmitCreateGroup() {
     let param = JSON.stringify({group_name:this.name, group_desc:this.desc, group_own:this.session, group_logo:'http://api.ajcomm.id/resources/images/groups/thumb.png'});
-    this.req.getRequest("live/create_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
+    this.req.getRequest("apptour/create_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
       // console.log(data);
       if (data.status == 1) {
         this.navCtrl.navigateForward(['live']);

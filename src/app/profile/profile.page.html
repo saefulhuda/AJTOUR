@@ -5,10 +5,30 @@
   </ion-refresher>
   <ion-item>
     <ion-avatar slot="start">
-      <img alt="{{profile.name}}" (click)="takePicture()" src="{{profile.path_image}}">
+      <img alt="{{profile.name}}" (click)="choiceFile()" src="{{profile.path_image}}">
     </ion-avatar>
     <ion-label>{{profile.name}}</ion-label>
   </ion-item>
+  <div style="text-align: center;">
+    <ion-grid>
+      <ion-row>
+        <ion-toolbar>
+          <ion-button (click)="updateQuote()" slot="end" color="dark" fill="clear">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </ion-toolbar>
+        <ion-col size="12">
+          <ion-label>Quote</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <p *ngIf="quoteStatus == 1">{{profile.quote}}</p>
+          <ion-input *ngIf="quoteStatus == 0" value="{{profile.quote}}" [(ngModel)]="quote" (change)="doUpdateQuote(profile.id)"></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
   <ion-list>
     <ion-item>
       <ion-label>No. Handphone</ion-label>

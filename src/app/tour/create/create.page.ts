@@ -7,17 +7,7 @@ import { NativeGeocoder, NativeGeocoderOptions } from '@ionic-native/native-geoc
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Map, tileLayer, marker, icon, Marker} from 'leaflet';
 import { NavController } from '@ionic/angular';
-// import {
-//   GoogleMaps,
-//   GoogleMap,
-//   GoogleMapsEvent,
-//   GoogleMapOptions,
-//   CameraPosition,
-//   MarkerOptions,
-//   Marker
-// } from '@ionic-native/google-maps/ngx';
 
-// declare var google;
 const TOKEN = environment.api_token;
 @Component({
   selector: 'app-create',
@@ -29,83 +19,47 @@ export class CreatePage {
   userId: any;
   map: Map;
   cordinateList: any;
-  // map: GoogleMap;
+  newMarker: any;
 
   @ViewChild('mapId', {static: false}) mapElement: ElementRef;
 
   constructor(private navCtrl: NavController, private activatedRoute: ActivatedRoute, public req: HttpRequestService, private storage: Storage, private geolocation: Geolocation, private geocoder: NativeGeocoder) {
+  this.intervalLoad(); 
+  }
+
+  ionViewDidEnter() {
+    console.log('Start app');
     this.activatedRoute.params.subscribe((params) => {
       this.id = params.id;
       this.storage.get('session').then(data => {
         this.userId = data.id;
-        this.ionViewDidEnter();
+
+        this.req.getRequest('apptour/read_user_live_position?request=' + JSON.stringify({ user_id: this.userId })).subscribe(data => {
+          if (data.status == 1) {
+            this.loadMap(data.result.lat, data.result.long);
+          }
+        });
       })
     });
-   }
-
-  ionViewDidEnter() {
-    this.loadMap();
   }
 
-  loadMap() {
-    this.map = new Map('mapId').setView([-6.1821531,106.6520064], 18);
+  loadMap(latOwn:number, longOwn: number) {
+    console.log('Load map');
+    this.map = new Map('mapId').setView([latOwn, longOwn], 18);
     tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         maxZoom: 20
     }).addTo(this.map);
     this.generateMemberPosition();
-    // let mapOptions: GoogleMapOptions = {
-    //   camera: {
-    //     target: {
-    //       lat: -6.894690,
-    //       lng: 110.638618
-    //     },
-    //     zoom: 18,
-    //     tilt: 30
-    //   }
-    // }
-    
-    // let coord = GoogleMaps.create('map', mapOptions);
-    // this.map = GoogleMaps.create('map_canvas', mapOptions);
-
-    // let marker: Marker = this.map.addMarkerSync({
-    //   title: 'Ionic',
-    //   icon: 'blue',
-    //   animation: 'DROP',
-    //   position: {
-    //     lat: 43.0741904,
-    //     lng: -89.3809802
-    //   }
-    // });
-    // marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-    //   alert('clicked');
-    // });
-    //  this.geolocation.getCurrentPosition().then((data) => {
-    //    console.log(data.coords.latitude);
-    //    console.log(data.coords.longitude);
-    //   //  let Latlong = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
-    //   //  let mapOptions = {
-    //   //    center: Latlong,
-    //   //    zoom: 15,
-    //   //    mapTypeId: google.maps.MapTypeId.ROADMAP
-    //   //  }
-    //   // this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    //  });
-   }
+  }
 
    generateMemberPosition() {
+    console.log('Generate position');
      this.cordinateList = [];
      let param = JSON.stringify({group_id: this.id});
-     this.req.getRequest('live/read_member_in_group?request='+param+'&api_key='+TOKEN).subscribe((data) => {
+     this.req.getRequest('apptour/read_member_in_group?request='+param+'&api_key='+TOKEN).subscribe((data) => {
        for(let list of data.result) {
-        //  this.lat = list.cordinate.split(',')[0];
-        //  this.long = list.cordinate.split(',')[1];
-        //  let popUp = '<img src="' + list.path_image + '"><hr><p>' + list.name + '</p><br><p>' + list.phone + '</p>';
-        //  marker([this.lat, this.long]).addTo(this.map)
-        //    .bindPopup(popUp)
-        //    .openPopup();
-        // console.log(list.cordinate);
         this.cordinateList = data.result;
        }
        for(let cor of this.cordinateList) {
@@ -117,26 +71,28 @@ export class CreatePage {
   }
 
   addMarker(lat: number, long: number, image: string, name: string) {
-    const iconRetinaUrl = 'assets/marker-icon-2x.png';
-    const iconUrl = 'assets/marker-icon.png';
-    const shadowUrl = 'assets/marker-shadow.png';
+    console.log('Add marker');
+    const iconUrl = 'http://api.ajcomm.id/resources/images/maps/bike-marker.png';
+
     const iconDefault = icon({
-      iconRetinaUrl,
       iconUrl,
-      shadowUrl,
-      iconSize: [25, 41],
+      iconSize: [100, 100],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
       tooltipAnchor: [16, -28],
       shadowSize: [41, 41]
     });
+    Marker.prototype.options.icon = iconDefault;
 
     let popUp = '<img src="' + image + '"><hr><p>' + name + '</p>';
-    let newMarker = marker([lat, long], {draggable: 
+    this.newMarker = marker([lat, long], {draggable: 
       true}).addTo(this.map)
-      .bindPopup(popUp)
-      .openPopup();
-      Marker.prototype.options.icon = iconDefault;
+      .bindPopup(popUp);
+      // .openPopup();
+  }
+
+  intervalLoad() {
+    let timerId = setInterval(() => this.generateMemberPosition(), 10000);
   }
 
   submitCreateTour() {
@@ -144,7 +100,6 @@ export class CreatePage {
 
   doRefresh(event) {
     console.log('Begin async operation');
-    this.ionViewDidEnter();
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();

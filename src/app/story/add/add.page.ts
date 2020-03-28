@@ -14,7 +14,7 @@ export class AddPage implements OnInit {
   session: any;
   image: any;
   title: any;
-  description: any;
+  content: any;
   constructor(private camera: Camera, private app: AppServiceService, private req: HttpRequestService, private storage: Storage, private route: Router) { }
 
   ngOnInit() {
@@ -69,11 +69,16 @@ export class AddPage implements OnInit {
   }
 
   postStory() {
-    let param = [{api_key:'414414'}, {request:JSON.stringify({user_id:this.session.id, title:this.title, description:this.description})}, {file:this.image}];
+    let param = [{api_key:'414414'}, {request:JSON.stringify({user_id:this.session.id, title:this.title, content:this.content})}, {file:this.image}];
     this.req.postRequest('live/post_story', param).subscribe(data => {
       console.log(data);
+      if (data.status == 1) {
+        this.app.showToast('Posted', 2000, 'top', 'success');
+        this.route.navigate(['/live/story']);
+      } else {
+       this.app.showAlert('','Sabar ya !!', 'Anda belum memasukan gambar story'); 
+      }
     });
-    this.route.navigate(['/live/story']);
   }
 
 }
