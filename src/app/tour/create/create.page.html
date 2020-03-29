@@ -1,4 +1,9 @@
-<ion-content>
+<ion-fab horizontal="end" vertical="top" slot="fixed">
+    <ion-fab-button color="dark">
+        <ion-icon (click)="showPopLocation($event)" name="archive-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<ion-content fullscreen>
     <!-- Custom Refresher Content -->
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>

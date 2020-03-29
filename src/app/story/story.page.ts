@@ -47,6 +47,7 @@ export class StoryPage implements OnInit {
     this.req.getRequest('apptour/add_like?request='+param+'&api_key='+TOKEN).subscribe(data => {
       console.log(data);
     });
+    this.doRefresh(event);
   }
 
   doComment(id) {
@@ -58,6 +59,7 @@ export class StoryPage implements OnInit {
         this.app.showToast(data.message, 2000, 'top', '');
       }
     });
+    this.doRefresh(event);
   }
 
   doRefresh(event) {
@@ -73,7 +75,8 @@ export class StoryPage implements OnInit {
     this.route.navigate(['/live/story/add']);
   }
 
-  showComment() {
+  showComment(id) {
+    this.route.navigate(['live/story/comment/'+id]);
   }
 
   toProfile(id) {

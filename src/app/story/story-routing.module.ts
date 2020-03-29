@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { StoryPage, ModalComment } from './story.page';
+import { StoryPage } from './story.page';
+import { CommentPage } from './comment/comment.page';
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
     loadChildren: () => import('./add/add.module').then( m => m.AddPageModule)
   },
   {
-    path: 'comment',
+    path: 'comment/:id',
     loadChildren: () => import('./comment/comment.module').then( m => m.CommentPageModule)
   }
 ];

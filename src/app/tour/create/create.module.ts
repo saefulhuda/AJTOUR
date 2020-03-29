@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CreatePageRoutingModule } from './create-routing.module';
 
-import { CreatePage } from './create.page';
+import { CreatePage, PopSelectLocation } from './create.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,7 @@ import { CreatePage } from './create.page';
     IonicModule,
     CreatePageRoutingModule
   ],
-  declarations: [CreatePage]
+  declarations: [CreatePage, PopSelectLocation],
+  entryComponents: [PopSelectLocation]
 })
 export class CreatePageModule {}

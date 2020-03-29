@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { NativeGeocoder, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Map, tileLayer, marker, icon, Marker} from 'leaflet';
-import { NavController } from '@ionic/angular';
+import { NavController, PopoverController } from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -23,8 +23,8 @@ export class CreatePage {
 
   @ViewChild('mapId', {static: false}) mapElement: ElementRef;
 
-  constructor(private navCtrl: NavController, private activatedRoute: ActivatedRoute, public req: HttpRequestService, private storage: Storage, private geolocation: Geolocation, private geocoder: NativeGeocoder) {
-  this.intervalLoad(); 
+  constructor(private PopoverController: PopoverController, private navCtrl: NavController, private activatedRoute: ActivatedRoute, public req: HttpRequestService, private storage: Storage, private geolocation: Geolocation, private geocoder: NativeGeocoder) {
+  // this.intervalLoad(); 
   }
 
   ionViewDidEnter() {
@@ -91,11 +91,19 @@ export class CreatePage {
       // .openPopup();
   }
 
-  intervalLoad() {
-    let timerId = setInterval(() => this.generateMemberPosition(), 10000);
-  }
+  // intervalLoad() {
+  //   let timerId = setInterval(() => this.generateMemberPosition(), 10000);
+  // }
 
   submitCreateTour() {
+  }
+
+  async showPopLocation(e) {
+    const pop = await this.PopoverController.create({
+      component: PopSelectLocation,
+      event: e
+    });
+    pop.present();
   }
 
   doRefresh(event) {
@@ -110,4 +118,17 @@ export class CreatePage {
     this.map.remove();
   }
 
+}
+
+@Component({
+  templateUrl: 'pop-select-location.page.html',
+})
+
+export class PopSelectLocation implements OnInit {
+  constructor() {
+  }
+
+  ngOnInit() {
+    
+  }
 }
