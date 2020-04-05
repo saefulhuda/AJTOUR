@@ -25,6 +25,7 @@ export class StoryPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log('initial');
     this.stories = [];
     this.user = [];
     this.req.getRequest("apptour/get_all_stories?api_key="+TOKEN).subscribe(data => {
@@ -43,6 +44,7 @@ export class StoryPage implements OnInit {
   }
 
   doLike(id) {
+    console.log('do like');
     let param = JSON.stringify({user_id: this.session.id, story_id: id});
     this.req.getRequest('apptour/add_like?request='+param+'&api_key='+TOKEN).subscribe(data => {
       console.log(data);
@@ -51,6 +53,7 @@ export class StoryPage implements OnInit {
   }
 
   doComment(id) {
+    console.log('do comment');
     let param = JSON.stringify({user_id: this.session.id, story_id: id, comment: this.comment})
     this.req.getRequest('apptour/add_comment?request='+param+'&api_key='+TOKEN).subscribe(data => {
       if (data.status == 1) {

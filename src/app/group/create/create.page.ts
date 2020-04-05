@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { AppServiceService } from 'src/app/app-service.service';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -16,7 +17,8 @@ export class CreatePage implements OnInit {
 name: string;
 desc: string;
 session: any;
-  constructor(private route: Router, private req: HttpRequestService, public navCtrl: NavController, private app: AppServiceService, private storage: Storage) {
+image: any;
+  constructor(private route: Router, private req: HttpRequestService, public navCtrl: NavController, private app: AppServiceService, private storage: Storage, private camera: Camera) {
     this.storage.get('session').then(data => {
       if (data==undefined) {
         this.route.navigate(['auth']);
@@ -28,12 +30,13 @@ session: any;
    }
 
   ngOnInit() {
-    console.log('Create');
+    console.log('initial');
   }
 
   SubmitCreateGroup() {
-    let param = JSON.stringify({group_name:this.name, group_desc:this.desc, group_own:this.session, group_logo:'http://api.ajcomm.id/resources/images/groups/thumb.png'});
-    this.req.getRequest("apptour/create_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
+    console.log('create group');
+    let param = [{request: JSON.stringify({group_name:this.name, group_desc:this.desc, group_own:this.session})}, {api_key: TOKEN}, {resources: this.image}];
+    this.req.postRequest("apptour/create_group",param).subscribe(data => {
       // console.log(data);
       if (data.status == 1) {
         this.navCtrl.navigateForward(['live']);
@@ -44,7 +47,48 @@ session: any;
   }
 
   doTakePicture() {
-    console.log('Take Logo');
+    let buttons = [{
+      text: 'Camera',
+      role: 'destructive',
+      icon: 'camera',
+      handler: () => {
+        console.log('Camera clicked');
+        const options: CameraOptions = {
+          quality: 100,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          sourceType: this.camera.PictureSourceType.CAMERA,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        }
+        this.camera.getPicture(options).then((result) => {
+          this.image = 'data:image/jpeg;base64,'+result;
+        });
+      }
+    }, {
+      text: 'File Gallery',
+      icon: 'folder',
+      handler: () => {
+        console.log('File clicked');
+        const options: CameraOptions = {
+          quality: 100,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        }
+        this.camera.getPicture(options).then((result) => {
+          this.image = 'data:image/jpeg;base64,'+result;
+        });
+      }
+    }, {
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    }]
+    this.app.showActionSheet(buttons);
   }
 
 }

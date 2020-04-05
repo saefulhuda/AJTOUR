@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ProfilePage, generalProfile } from './profile.page';
+import { ProfilePage, generalProfile, storyProfile } from './profile.page';
 
 const routes: Routes = [
   {
@@ -15,6 +15,10 @@ const routes: Routes = [
   {
     path: 'general/:id',
     component: generalProfile
+  },
+  {
+    path: 'story/:id',
+    component: storyProfile
   }
 ];
 

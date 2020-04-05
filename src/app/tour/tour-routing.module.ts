@@ -9,6 +9,10 @@ const routes: Routes = [
     component: TourPage
   },
   {
+    path: 'live/:id',
+    component: TourPage
+  },
+  {
     path: 'create',
     loadChildren: () => import('./create/create.module').then( m => m.CreatePageModule)
   }

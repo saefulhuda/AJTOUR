@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-live',
@@ -9,16 +10,26 @@ import { Router } from '@angular/router';
 })
 export class LivePage implements OnInit {
   header: string = 'AJCOMM TOUR';
-  constructor(public nav: NavController, private route: Router) {
+  session: any;
+  profile: any;
+  constructor(public nav: NavController, private route: Router, private menu: MenuController, private storage: Storage) {
+    this.session = [];
+    this.storage.get('session').then(data => {
+      this.session = data;
+    });
    }
 
   ngOnInit() {
   }
 
-  showProfile()
-  {
-    // console.log('show profile');
+  showProfile() {
+    console.log('show profile');
     this.route.navigate(['/live/profile']);
+  }
+
+  showSideMenu() {
+    console.log('Show side menu');
+    this.route.navigate(['live/side']);
   }
 
 }

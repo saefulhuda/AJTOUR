@@ -21,6 +21,7 @@ export class RegisterPage implements OnInit {
   }
 
   doRegister() {
+    console.log('do register');
     if (this.email == null) {
       this.app.showToast('Silahkan isi alamat email', 2000, 'top');
     } else if (this.phone == null) {

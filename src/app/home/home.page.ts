@@ -29,6 +29,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
+    console.log('initial');
     this.ads = [];
     this.req.getRequest("services/get_all_ads?api_key=" + TOKEN).subscribe(data => {
       if (data.status == 1) {
@@ -42,6 +43,7 @@ export class HomePage implements OnInit {
   }
 
   showGroup() {
+    console.log('show group');
     this.groups = [];
     let param = JSON.stringify({ user_id: this.session });
     // this.req.getRequest("live/read_all_group_by_user_id?request=" + param + "&api_key=" + TOKEN).subscribe(data => {

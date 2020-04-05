@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  // api_url: 'http://api.ajcomm.id/',
-  api_url: 'http://localhost/api.ajcomm.id/',
+  api_url: 'http://api.ajcomm.id/',
   api_token: '414414'
 };
 

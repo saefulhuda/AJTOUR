@@ -8,7 +8,7 @@ import { ProfilePageRoutingModule } from './profile-routing.module';
 
 import { ProfilePage } from './profile.page';
 import { generalProfile } from './profile.page';
-
+import { storyProfile } from './profile.page';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +16,6 @@ import { generalProfile } from './profile.page';
     IonicModule,
     ProfilePageRoutingModule
   ],
-  declarations: [ProfilePage, generalProfile]
+  declarations: [ProfilePage, generalProfile, storyProfile]
 })
 export class ProfilePageModule {}

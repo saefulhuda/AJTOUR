@@ -16,6 +16,7 @@ company: any;
   }
 
   ngOnInit() {
+    console.log('initial');
     this.guids = [];
     this.company = [];
     this.req.getRequest("companies/get_guids?api_key=" + TOKEN).subscribe(data => {

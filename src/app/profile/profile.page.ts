@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { NavParams } from '@ionic/angular';
 import { AppServiceService } from '../app-service.service';
 
 const TOKEN = environment.api_token;
@@ -13,7 +12,7 @@ const TOKEN = environment.api_token;
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage {
   profile: any;
   profileName: string;
   session: any;
@@ -21,7 +20,7 @@ export class ProfilePage implements OnInit {
   image: any;
   quote: any;
   quoteStatus: any;
-  constructor(private req: HttpRequestService, private route: Router, private storage: Storage, private camera: Camera, private app: AppServiceService) {
+  constructor(public activedRoute: ActivatedRoute, public req: HttpRequestService, public route: Router, private storage: Storage, private camera: Camera, public app: AppServiceService) {
     this.session = []; 
     this.storage.get('session').then(data => {
       if (data==undefined) {
@@ -31,7 +30,6 @@ export class ProfilePage implements OnInit {
         this.ngOnInit();
       }
     });
-    this.quoteStatus = 1;
   }
 
   ngOnInit() {
@@ -40,6 +38,7 @@ export class ProfilePage implements OnInit {
     this.req.getRequest('apptour/get_user_by_id?request='+param+'&api_key='+TOKEN).subscribe(data => {
       this.profile = data.result;
     });
+    this.quoteStatus = 1;
   }
 
   doLogout(){
@@ -49,7 +48,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  doRefresh(event) {
+  public doRefresh(event) {
     console.log('Begin async operation');
     this.ngOnInit();
     setTimeout(() => {
@@ -127,24 +126,34 @@ export class ProfilePage implements OnInit {
   }
 
   doUpdateQuote(id) {
-    console.log(id);
+    console.log('update quote');
     console.log(this.quote);
     this.req.getRequest('auth/update_user_quote?request='+JSON.stringify({user_id:id, quote:this.quote})+'&api_key='+TOKEN).subscribe(data => {
-      console.log(data);
+      if (data.status == 1) {
+        this.app.showToast('Success update quote', 2000, 'top');
+        this.doRefresh(event);
+      } else {
+        this.app.showToast('Failed '+data.message, 2000, 'top');
+      }
     });
     this.quoteStatus = 1;
+  }
+
+  toStory() {
+    this.route.navigate(['/live/profile/story/'+this.session.id]);
   }
 
 }
 
 @Component({
+  selector: 'general-profile',
   templateUrl: './general-profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class generalProfile implements OnInit {
+export class generalProfile extends ProfilePage implements OnInit {
   profile = [];
-  constructor(private req: HttpRequestService, private activedRoute: ActivatedRoute, private app: AppServiceService) {
-  }
+  // constructor(private req: HttpRequestService, private activedRoute: ActivatedRoute, private app: AppServiceService) {
+  // }
 
   ngOnInit() {
     console.log('Class profile OK');
@@ -158,5 +167,66 @@ export class generalProfile implements OnInit {
         }
       });
     })
+  }
+
+  doContact() {
+    let buttons = [{
+      text: 'Call',
+      role: 'destructive',
+      icon: 'call-outline',
+      handler: () => {
+        console.log('Call clicked');
+      }
+    }, {
+      text: 'Chat',
+      icon: 'mail-outline',
+      handler: () => {
+        console.log('File clicked');
+      }
+    }, {
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    }];
+    this.app.showActionSheet(buttons, 'Make contact');
+  }
+
+  toStory() {
+    this.route.navigate(['/live/profile/story/'+this.session.id]);
+  }
+}
+
+@Component({
+  templateUrl: './story-profile.page.html',
+  styleUrls: ['./profile.page.scss'],
+})
+export class storyProfile extends ProfilePage implements OnInit {
+  stories: any;
+  user: any;
+  session: any = [];
+  allComment: any;
+  comment: any;
+
+  ngOnInit() {
+    console.log('story by user');
+    this.stories = [];
+    this.user = [];
+    this.req.getRequest("apptour/get_all_stories?api_key="+TOKEN).subscribe(data => {
+      if (data.status == 1) {
+        console.log(data);
+        for (let list of data.result) {
+          this.stories = data.result;
+          let param = JSON.stringify({id:list.user_id});
+          this.req.getRequest("apptour/get_user_by_id?request="+param+"&api_key="+TOKEN).subscribe(data => {
+            this.user = data.result;
+          });
+        }
+      } else {
+        console.log(data.result);
+      }
+    });
   }
 }

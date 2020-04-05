@@ -4,6 +4,8 @@ import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
 import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { AppServiceService } from '../app-service.service';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -16,7 +18,8 @@ member: any;
 detail: any;
 session: any;
 sumMember: any;
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController, private storage: Storage) {
+profile: any;
+  constructor(private app: AppServiceService, public camera: Camera, private route: Router, private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController, private storage: Storage) {
     this.storage.get('session').then(data => {
       if (data==undefined) {
         this.route.navigate(['auth']);
@@ -28,6 +31,7 @@ sumMember: any;
    }
 
   ngOnInit() {
+    console.log('initial');
     this.activatedRoute.params.subscribe((params) => {
       this.member = [] ;
       this.detail = [] ;
@@ -54,11 +58,61 @@ sumMember: any;
 
   toAddMember(id) {
     this.navCtrl.navigateForward(['live/group/add/'+id]);
-    // console.log(id);
   }
 
   showProfile(id) {
     this.navCtrl.navigateForward(['/live/profile/general/'+id])
+  }
+
+  choiceFile(id) {
+    let buttons = [{
+      text: 'Camera',
+      role: 'destructive',
+      icon: 'camera',
+      handler: () => {
+        console.log('Camera clicked');
+        const options: CameraOptions = {
+          quality: 100,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          sourceType: this.camera.PictureSourceType.CAMERA,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        }
+        this.camera.getPicture(options).then((result) => {
+          this.profile.path_image = 'data:image/jpeg;base64,'+result;
+          this.updateLogo(id);
+        });
+      }
+    }, {
+      text: 'File Gallery',
+      icon: 'folder',
+      handler: () => {
+        console.log('File clicked');
+        const options: CameraOptions = {
+          quality: 100,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE
+        }
+        this.camera.getPicture(options).then((result) => {
+          this.profile.path_image = 'data:image/jpeg;base64,'+result;
+          this.updateLogo(id);
+        });
+      }
+    }, {
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    }]
+    this.app.showActionSheet(buttons);
+  }
+
+  updateLogo(id) {
+    console.log('update logo');
   }
 
 }

@@ -23,6 +23,7 @@ export class AuthPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log('initial');
     this.geolocation.getCurrentPosition().then(data => {
       this.lat = data.coords.latitude;
       this.long = data.coords.longitude;
@@ -31,6 +32,7 @@ export class AuthPage implements OnInit {
   }
 
   doLogin() {
+    console.log('do login');
     if (this.email == null) {
       this.app.showToast('Silahkan masukan email anda', 2000, 'top');
     } else if (this.password == null) {

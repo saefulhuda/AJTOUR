@@ -10,13 +10,23 @@
     </ion-card-header>
 
     <ion-card-content>
+      <img *ngIf="image != null" style="width: fit-content; height: 200px;" [src]="image">
       <!-- Input with clear button when there is a value -->
       <ion-input [(ngModel)]="name" clearInput placeholder="Nama group"></ion-input>
 
       <!-- Textarea type input -->
       <ion-textarea [(ngModel)]="desc" placeholder="Catatan group"></ion-textarea>
       <div class="ion-padding">
-        <ion-button (click)="SubmitCreateGroup()" expand="block" class="ion-no-margin">Buat Group</ion-button>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <ion-button (click)="doTakePicture()" expand="block" class="ion-no-margin">Pilih Logo</ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button (click)="SubmitCreateGroup()" expand="block" class="ion-no-margin">Buat Group</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
     </ion-card-content>
   </ion-card>

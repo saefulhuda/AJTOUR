@@ -4,7 +4,9 @@ import { AppServiceService } from 'src/app/app-service.service';
 import { HttpRequestService } from 'src/app/http-request.service';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
+const TOKEN = environment.api_token;
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -18,6 +20,7 @@ export class AddPage implements OnInit {
   constructor(private camera: Camera, private app: AppServiceService, private req: HttpRequestService, private storage: Storage, private route: Router) { }
 
   ngOnInit() {
+    console.log('initial');
     this.storage.get('session').then(data => {
       this.session = data;
     });
@@ -64,17 +67,18 @@ export class AddPage implements OnInit {
       handler: () => {
         console.log('Cancel clicked');
       }
-    }]
+    }];
     this.app.showActionSheet(buttons);
   }
 
   postStory() {
-    let param = [{api_key:'414414'}, {request:JSON.stringify({user_id:this.session.id, title:this.title, content:this.content})}, {file:this.image}];
+    console.log('post story');
+    let param = [{api_key:TOKEN}, {request:JSON.stringify({user_id:this.session.id, title:this.title, content:this.content})}, {file:this.image}];
     this.req.postRequest('live/post_story', param).subscribe(data => {
       console.log(data);
       if (data.status == 1) {
         this.app.showToast('Posted', 2000, 'top', 'success');
-        this.route.navigate(['/live/story']);
+        this.route.navigate(['/apptour/story']);
       } else {
        this.app.showAlert('','Sabar ya !!', 'Anda belum memasukan gambar story'); 
       }

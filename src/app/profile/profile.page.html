@@ -1,59 +1,92 @@
 <ion-content>
   <!-- Custom Refresher Content -->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
+      <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-item>
-    <ion-avatar slot="start">
-      <img alt="{{profile.name}}" (click)="choiceFile()" src="{{profile.path_image}}">
-    </ion-avatar>
-    <ion-label>{{profile.name}}</ion-label>
-  </ion-item>
-  <div style="text-align: center;">
     <ion-grid>
       <ion-row>
-        <ion-toolbar>
-          <ion-button (click)="updateQuote()" slot="end" color="dark" fill="clear">
-            <ion-icon name="create-outline"></ion-icon>
-          </ion-button>
-        </ion-toolbar>
-        <ion-col size="12">
-          <ion-label>Quote</ion-label>
+        <ion-col size="4" style="align-items: center;">
+          <ion-avatar class="ion-margin-start">
+            <img (click)="choiceFile()" alt="{{profile.name}}" src="{{profile.path_image}}">
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="8" style="text-align: center;">
+          <ion-row>
+            <ion-col size="4">
+              <b>3</b><br>
+              <p>Follower</p>
+            </ion-col>
+            <ion-col size="4">
+              <b>3</b><br>
+              <p>Follower</p>
+            </ion-col>
+            <ion-col size="4">
+              <b>3</b><br>
+              <p>Follower</p>
+            </ion-col>
+          </ion-row>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
+          <p>{{profile.name}}</p>
+          <p>{{profile.phone}}</p>
           <p *ngIf="quoteStatus == 1">{{profile.quote}}</p>
-          <ion-input *ngIf="quoteStatus == 0" value="{{profile.quote}}" [(ngModel)]="quote" (change)="doUpdateQuote(profile.id)"></ion-input>
+          <ion-input *ngIf="quoteStatus == 0" value="{{profile.quote}}" [(ngModel)]="quote"
+            (change)="doUpdateQuote(profile.id)"></ion-input>
         </ion-col>
       </ion-row>
-    </ion-grid>
-  </div>
-  <ion-list>
-    <ion-item>
-      <ion-label>No. Handphone</ion-label>
-      <p slot="end" color="primary">{{profile.phone}}</p>
-    </ion-item>
-    <ion-item>
-      <ion-label>Email</ion-label>
-      <p slot="end" color="primary">{{profile.email}}</p>
-    </ion-item>
-  </ion-list>
-  <ion-list>
-    <ion-grid>
       <ion-row>
         <ion-col size="6">
-          <ion-button (click)="updateProfile()" color="dark" expand="block">
-            Update
-          </ion-button>
+          <ion-button (click)="updateProfile()" expand="block" fill="outline" color="dark">UPDATE PROFILE</ion-button>
         </ion-col>
         <ion-col size="6">
-          <ion-button (click)="doLogout()" color="dark" expand="block">
-            Keluar
-            <ion-icon name="enter-outline"></ion-icon>
-          </ion-button>
+          <ion-button (click)="updateQuote()" expand="block" fill="outline" color="dark">UPDATE QUOTE</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
-  </ion-list>
+  </ion-item>
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-segment (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="friends">
+              <ion-label>My Stories</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="enemies">
+              <ion-label>Tags Me</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col (click)="toStory()" size="4">
+          <img (click)="toStory()" src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+        <ion-col size="4">
+          <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+        <ion-col size="4">
+          <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+        <ion-col size="4">
+          <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+        <ion-col size="4">
+          <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+        <ion-col size="4">
+          <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+        <ion-col size="4">
+          <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+        <ion-col size="4">
+          <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
 </ion-content>

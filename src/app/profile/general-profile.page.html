@@ -1,43 +1,85 @@
 <ion-content>
+    <!-- Custom Refresher Content -->
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-item>
         <ion-grid>
             <ion-row>
-                <ion-col size="12" style="text-align: center;">
-                    <img class="image-profile" alt="{{profile.name}}" src="{{profile.path_image}}">
+                <ion-col size="4" style="align-items: center;">
+                    <ion-avatar class="ion-margin-start">
+                        <img alt="{{profile.name}}" src="{{profile.path_image}}">
+                    </ion-avatar>
+                </ion-col>
+                <ion-col size="8" style="text-align: center;">
+                    <ion-row>
+                        <ion-col size="4">
+                            <b>3</b><br>
+                            <p>Follower</p>
+                        </ion-col>
+                        <ion-col size="4">
+                            <b>4</b><br>
+                            <p>Following</p>
+                        </ion-col>
+                        <ion-col size="4">
+                            <b>30</b><br>
+                            <p>Group</p>
+                        </ion-col>
+                    </ion-row>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col size="12">
-                    <ion-label>
-                        <div style="text-align: center;">
-                            <h2>{{profile.name}}</h2>
-                            <h3>{{profile.phone}}</h3>
-                        </div>
-                    </ion-label>
-                    <p style="text-align: center;">{{profile.quote}}</p>
+                    <p>{{profile.name}}</p>
+                    <p>{{profile.quote}}</p>
                 </ion-col>
             </ion-row>
             <hr>
             <ion-row style="text-align: center;">
-                <ion-col size="3">
-                    <ion-button color="dark">
-                        <ion-icon name="mail-open-outline"></ion-icon>
+                <ion-col size="4">
+                    <ion-button expand="block" color="dark" fill="outline">
+                        <ion-label>Invite</ion-label>
                     </ion-button>
                 </ion-col>
-                <ion-col size="3">
-                    <ion-button color="dark">
-                        <ion-icon name="call-outline"></ion-icon>
+                <ion-col size="4">
+                    <ion-button expand="block" color="dark" fill="outline">
+                        <ion-label>Follow</ion-label>
                     </ion-button>
                 </ion-col>
-                <ion-col size="3">
-                    <ion-button color="dark" fill="outline">
-                        <ion-icon name="search-outline"></ion-icon>
+                <ion-col size="4">
+                    <ion-button (click)="doContact()" expand="block" color="dark" fill="outline">
+                        <ion-label>Contact</ion-label>
                     </ion-button>
                 </ion-col>
-                <ion-col size="3">
-                    <ion-button color="dark" fill="outline">
-                        <ion-icon name="person-add-outline"></ion-icon>
-                    </ion-button>
+            </ion-row>
+        </ion-grid>
+    </ion-item>
+    <ion-item>
+        <ion-grid>
+            <ion-row>
+                <ion-col (click)="toStory()" size="4">
+                    <img (click)="toStory()" src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+                </ion-col>
+                <ion-col size="4">
+                    <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+                </ion-col>
+                <ion-col size="4">
+                    <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+                </ion-col>
+                <ion-col size="4">
+                    <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+                </ion-col>
+                <ion-col size="4">
+                    <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+                </ion-col>
+                <ion-col size="4">
+                    <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+                </ion-col>
+                <ion-col size="4">
+                    <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
+                </ion-col>
+                <ion-col size="4">
+                    <img src="https://i.pinimg.com/originals/3e/2a/f6/3e2af664e061013a3d05aa99fa20c1d4.jpg">
                 </ion-col>
             </ion-row>
         </ion-grid>

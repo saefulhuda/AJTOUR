@@ -26,6 +26,7 @@ groupId: number;
   }
 
   searchMember() {
+    console.log('search member');
     let param = JSON.stringify({email:this.key});
     this.req.getRequest("apptour/get_user_by_email?request="+param+"&api_key="+TOKEN).subscribe(data => {
       if (data.status == 1) {
@@ -39,11 +40,12 @@ groupId: number;
   }
 
   addMember(email) {
+    console.log('add member');
     let param = JSON.stringify({friend_mail:email, group_id:this.groupId})
     this.req.getRequest("apptour/add_friend_to_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
       if (data.status == 1) {
         this.app.showToast(email+' berhasil ditambahkan', 4000, 'top', 'success');
-        this.route.navigate(['apptour/group/',this.groupId]);
+        this.route.navigate(['live/group/',this.groupId]);
       } else {
         this.app.showToast(data.message, 2000, top);
       }

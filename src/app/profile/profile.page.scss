@@ -1,5 +1,8 @@
-.image-profile {
-    border: 1px solid #ddd; /* Gray border */
-    border-radius: 4px;  /* Rounded border */
-    padding: 5px; /* Some padding */
+general-profile {
+    ion-avatar img {
+        width: 100px !important ;
+        height: 100px !important;
+        border-radius: 50%;
+        border: red($color: #000000);
+    }
 }

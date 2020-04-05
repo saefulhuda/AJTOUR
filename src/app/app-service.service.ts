@@ -27,9 +27,9 @@ export class AppServiceService {
     return await alertBox.present();
   }
 
-  async showActionSheet(buttons:any = []) { // param buttons = text, icon and action if success
+  async showActionSheet(buttons:any = [], header:any = 'Albums') { // param buttons = text, icon and action if success
     const actionSheet = await this.actionSheetController.create({
-      header: 'Albums',
+      header: header,
       buttons: buttons
     });
     return await actionSheet.present();

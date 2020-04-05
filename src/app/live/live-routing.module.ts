@@ -74,6 +74,10 @@ const routes: Routes = [
         import('../group/create/create.module').then(m => m.CreatePageModule)
       },
       {
+        path: 'side',
+        loadChildren: () => import('./side/side.module').then( m => m.SidePageModule)
+      },
+      {
         path: '',
         redirectTo: '/live/home',
         pathMatch: 'full'
