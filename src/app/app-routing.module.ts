@@ -21,6 +21,14 @@ const routes: Routes = [
   {
     path: 'tour',
     loadChildren: () => import('./tour/tour.module').then( m => m.TourPageModule)
+  },
+  {
+    path: 'follow',
+    loadChildren: () => import('./follow/follow.module').then( m => m.FollowPageModule)
+  },
+  {
+    path: 'discover',
+    loadChildren: () => import('./discover/discover.module').then( m => m.DiscoverPageModule)
   }
 ];
 

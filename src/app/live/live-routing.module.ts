@@ -39,6 +39,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'discover',
+        children: [
+          {
+            path: '',
+            loadChildren: () => 
+            import('../discover/discover.module').then(m => m.DiscoverPageModule)
+          }
+        ]
+      },
+      {
         path: 'about',
         children: [
           {
@@ -54,9 +64,24 @@ const routes: Routes = [
         import('../profile/profile.module').then(m => m.ProfilePageModule)
       },
       {
+        path: 'follow/:id',
+        loadChildren: () =>
+        import('../follow/follow.module').then(m => m.FollowPageModule)
+      },
+      {
+        path: 'following/:id',
+        loadChildren: () =>
+        import('../follow/following/following.module').then(m => m.FollowingPageModule)
+      },
+      {
         path: 'group/:id',
         loadChildren: () =>
         import('../group/group.module').then(m => m.GroupPageModule)
+      },
+      {
+        path: 'group/list/:id',
+        loadChildren: () =>
+        import('../group/list/list.module').then(m => m.ListPageModule)
       },
       {
         path: 'tour/create/:id',

@@ -29,7 +29,7 @@
             </ion-card-header>
 
             <ion-card-content>
-                <img class="image-story" alt="{{data.title}}" src="{{data.resource}}">
+                <img class="image-story" alt="{{data.title}}" src="{{data.resource_original}}">
                 <ion-grid>
                     <ion-row>
                         <ion-col size="6" style="text-align: center;">
@@ -70,6 +70,12 @@
                 </ion-grid>
             </ion-card-content>
         </div>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+            <ion-infinite-scroll-content
+              loadingSpinner="bubbles"
+              loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
     </ion-content>
     <hr>
 </ion-content>

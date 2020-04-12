@@ -18,8 +18,7 @@ export class AuthPage implements OnInit {
   password: string;
   lat: any;
   long: any;
-  constructor(public app: AppServiceService, public req: HttpRequestService, private route: Router, private storage: Storage, private geolocation: Geolocation) {
-
+  constructor(public app: AppServiceService, public req: HttpRequestService, public route: Router, private storage: Storage, private geolocation: Geolocation) {
   }
 
   ngOnInit() {
@@ -59,5 +58,28 @@ export class AuthPage implements OnInit {
 
   toRegister() {
     this.route.navigate(['/register']);
+  }
+}
+
+@Component({
+  templateUrl: './auth-forgot.page.html',
+  styleUrls: ['./auth.page.scss'],
+})
+
+export class AuthForgotPage extends AuthPage implements OnInit {
+  email: any;
+  ngOnInit() {
+
+  }
+
+  doReset() {
+    this.req.getRequest('auth/forgot_password?request='+JSON.stringify({email: this.email})+'&api_key='+TOKEN).subscribe(data => {
+      if (data.status == 1) {
+        this.app.showAlert('', 'Berhasil', 'Silakan periksa email anda untuk melihat password baru');
+        this.route.navigate(['auth']);
+      } else {
+        this.app.showToast(data.message, 2000, 'top', 'danger');
+      }
+    });
   }
 }

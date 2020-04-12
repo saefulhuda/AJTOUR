@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-side',
   templateUrl: './side.page.html',
@@ -8,7 +9,7 @@ import { Storage } from '@ionic/storage';
 export class SidePage implements OnInit {
   session: any;
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private route: Router) {
     this.session = [];
     this.storage.get('session').then(data => {
       this.session = data;
@@ -16,6 +17,13 @@ export class SidePage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  doLogout(){
+    let clearSession = this.storage.remove('session');
+    if (clearSession) {
+      this.route.navigate(['/auth']);
+    }
   }
 
 }

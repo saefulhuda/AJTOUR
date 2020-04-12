@@ -74,11 +74,11 @@ export class AddPage implements OnInit {
   postStory() {
     console.log('post story');
     let param = [{api_key:TOKEN}, {request:JSON.stringify({user_id:this.session.id, title:this.title, content:this.content})}, {file:this.image}];
-    this.req.postRequest('live/post_story', param).subscribe(data => {
+    this.req.postRequest('apptour/post_story', param).subscribe(data => {
       console.log(data);
       if (data.status == 1) {
         this.app.showToast('Posted', 2000, 'top', 'success');
-        this.route.navigate(['/apptour/story']);
+        this.route.navigate(['/live/story']);
       } else {
        this.app.showAlert('','Sabar ya !!', 'Anda belum memasukan gambar story'); 
       }

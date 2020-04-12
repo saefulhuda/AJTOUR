@@ -12,30 +12,35 @@ const TOKEN = environment.api_token;
   styleUrls: ['./story.page.scss'],
 })
 export class StoryPage implements OnInit {
-  stories: any;
-  user: any;
+  stories: any = [];
+  user: any = [];
   session: any = [];
   allComment: any;
+  allStories: any = [];
   comment: any;
-  constructor(public req: HttpRequestService, private route: Router, private app: AppServiceService, private storage: Storage) { 
-    this.storage.get('session').then(data => {
-      this.session = data;
-    });
+  start: any;
+  limit: any;
+  constructor(public req: HttpRequestService, private route: Router, private app: AppServiceService, private storage: Storage) {
     this.allComment = 0;
   }
 
   ngOnInit() {
     console.log('initial');
-    this.stories = [];
-    this.user = [];
-    this.req.getRequest("apptour/get_all_stories?api_key="+TOKEN).subscribe(data => {
+    this.start = 0;
+    this.limit = 4;
+    this.storage.get('session').then(data => {
+      this.session = data;
+      this.loadStory();
+    });
+  }
+
+  loadStory() {
+    let param = JSON.stringify({user_id: this.session.id, start: this.start, limit: this.limit });
+    this.req.getRequest("apptour/get_all_story_by_following?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
       if (data.status == 1) {
         for (let list of data.result) {
-          this.stories = data.result;
-          let param = JSON.stringify({id:list.user_id});
-          this.req.getRequest("apptour/get_user_by_id?request="+param+"&api_key="+TOKEN).subscribe(data => {
-            this.user = data.result;
-          });
+          this.stories.push(list);
+          this.user = list.user_detail;
         }
       } else {
         console.log(data.result);
@@ -48,8 +53,13 @@ export class StoryPage implements OnInit {
     let param = JSON.stringify({user_id: this.session.id, story_id: id});
     this.req.getRequest('apptour/add_like?request='+param+'&api_key='+TOKEN).subscribe(data => {
       console.log(data);
+      if (data.status == 1) {
+        this.app.showToast(data.message, 2000, 'top', 'primary');
+        this.doRefresh(event);
+      } else {
+        this.app.showToast(data.message, 2000, 'top', 'dark');
+      }
     });
-    this.doRefresh(event);
   }
 
   doComment(id) {
@@ -70,6 +80,15 @@ export class StoryPage implements OnInit {
     this.ngOnInit();
     setTimeout(() => {
       console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
+
+  loadData(event) {
+    this.start = this.start + 4;
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      this.loadStory();
       event.target.complete();
     }, 2000);
   }

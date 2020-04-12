@@ -1,0 +1,17 @@
+<ion-content>
+  <ion-list>
+      <ion-list-header>
+          Follower
+      </ion-list-header>
+
+      <ion-item *ngFor="let list of follower">
+          <ion-avatar slot="start" (click)="toProfile(list.id)">
+              <img alt="{{list.name}}" src="{{list.path_image}}">
+          </ion-avatar>
+          <ion-label>
+              <h3>{{list.name}}</h3>
+              <p>{{list.quote}}</p>
+          </ion-label>
+      </ion-item>
+  </ion-list>
+</ion-content>

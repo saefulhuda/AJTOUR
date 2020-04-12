@@ -19,6 +19,8 @@ detail: any;
 session: any;
 sumMember: any;
 profile: any;
+image: any;
+updateGroup: any;
   constructor(private app: AppServiceService, public camera: Camera, private route: Router, private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController, private storage: Storage) {
     this.storage.get('session').then(data => {
       if (data==undefined) {
@@ -32,6 +34,7 @@ profile: any;
 
   ngOnInit() {
     console.log('initial');
+    this.updateGroup = 0;
     this.activatedRoute.params.subscribe((params) => {
       this.member = [] ;
       this.detail = [] ;
@@ -50,6 +53,15 @@ profile: any;
         this.sumMember = data.result.length;
       });
     })
+  }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.ngOnInit();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
   }
 
   createTour(id) {
@@ -79,7 +91,7 @@ profile: any;
           mediaType: this.camera.MediaType.PICTURE
         }
         this.camera.getPicture(options).then((result) => {
-          this.profile.path_image = 'data:image/jpeg;base64,'+result;
+          this.image = 'data:image/jpeg;base64,'+result;
           this.updateLogo(id);
         });
       }
@@ -96,7 +108,7 @@ profile: any;
           mediaType: this.camera.MediaType.PICTURE
         }
         this.camera.getPicture(options).then((result) => {
-          this.profile.path_image = 'data:image/jpeg;base64,'+result;
+          this.image = 'data:image/jpeg;base64,'+result;
           this.updateLogo(id);
         });
       }
@@ -113,6 +125,28 @@ profile: any;
 
   updateLogo(id) {
     console.log('update logo');
+    let param = [{request: JSON.stringify({user_id: this.session.id, group_id: id})}, {api_key: TOKEN}, {file: this.image}];
+    this.req.postRequest('apptour/update_logo_group', param).subscribe( data => {
+      if (data.status == 1) {
+        this.app.showToast('Update logo berhasil', 2000, 'top', 'success');
+        this.doRefresh(event);
+      } else {
+        this.app.showToast(data.message, 2000, 'top');
+      }
+    });
+  }
+
+  updateDetail(id) {
+    console.log('Update detail');
+    let param = JSON.stringify({group_id: id, group_name: this.detail.group_name, group_desc: this.detail.group_desc});
+    this.req.getRequest('apptour/update_group?request='+param+'&api_key='+TOKEN).subscribe(data => {
+      if (data.status == 1) {
+        this.app.showToast('Group updated', 2000, 'top', 'success');
+        this.doRefresh(event);
+      } else {
+        this.app.showToast(data.message, 2000, 'top', 'success');
+      }
+    });
   }
 
 }

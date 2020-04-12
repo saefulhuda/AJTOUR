@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthPage, AuthForgotPage } from './auth.page';
+import { FollowPage } from './follow.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: AuthPage
+    component: FollowPage
   },
   {
-    path: 'forgot',
-    component: AuthForgotPage
+    path: 'following',
+    loadChildren: () => import('./following/following.module').then( m => m.FollowingPageModule)
   }
 ];
 
@@ -18,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AuthPageRoutingModule {}
+export class FollowPageRoutingModule {}
