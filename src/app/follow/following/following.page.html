@@ -1,9 +1,17 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>following</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-list>
+      <ion-list-header>
+          Following
+      </ion-list-header>
 
+      <ion-item *ngFor="let list of following">
+          <ion-avatar slot="start" (click)="toProfile(list.id)">
+              <img alt="{{list.name}}" src="{{list.path_image}}">
+          </ion-avatar>
+          <ion-label>
+              <h3>{{list.name}}</h3>
+              <p>{{list.quote}}</p>
+          </ion-label>
+      </ion-item>
+  </ion-list>
 </ion-content>

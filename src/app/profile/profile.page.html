@@ -17,7 +17,7 @@
               <b>{{follower.length}}</b><br>
               <p>Follower</p>
             </ion-col>
-            <ion-col (click)="showFolloeing(profile.id)" size="4">
+            <ion-col (click)="showFollowing(profile.id)" size="4">
               <b>{{following.length}}</b><br>
               <p>Following</p>
             </ion-col>
@@ -52,13 +52,13 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-segment>
-          <ion-segment-button (click)="storyStatus = 0" value="friends">
+        <ion-segment (ionChange)="showStory($event)">
+          <ion-segment-button value="0">
             <ion-label>
               <ion-icon name="film-outline"></ion-icon>
             </ion-label>
           </ion-segment-button>
-          <ion-segment-button (click)="storyStatus = 1" value="enemies">
+          <ion-segment-button value="1">
             <ion-label>
               <ion-icon name="grid-outline"></ion-icon>
             </ion-label>
@@ -73,7 +73,7 @@
     </ion-row>
     <ion-row *ngIf="storyStatus == 0">
       <ion-col size="12" *ngFor="let data of stories">
-        <img class="image-story" alt="{{data.title}}" src="{{data.resource_original}}">
+        <img class="image-story" alt="{{data.title}}" (click)="toStory(data.id)" src="{{data.resource_original}}">
         <ion-grid>
           <ion-row>
             <ion-col size="6" style="text-align: center;">
@@ -124,4 +124,10 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

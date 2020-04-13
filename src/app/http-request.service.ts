@@ -13,6 +13,10 @@ export class HttpRequestService {
   value: any;
   constructor(private http: HttpClient) { }
 
+  generalGetRequest(url) {
+    return this.http.get<any>(url);
+  }
+
   getRequest(param) {
     return this.http.get<any>(URL+param);
   }

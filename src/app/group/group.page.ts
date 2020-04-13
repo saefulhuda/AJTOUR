@@ -26,7 +26,7 @@ updateGroup: any;
       if (data==undefined) {
         this.route.navigate(['auth']);
       } else {
-        this.session = data.id;
+        this.session = data;
         this.ngOnInit();
       }
     });
@@ -138,13 +138,13 @@ updateGroup: any;
 
   updateDetail(id) {
     console.log('Update detail');
-    let param = JSON.stringify({group_id: id, group_name: this.detail.group_name, group_desc: this.detail.group_desc});
+    let param = JSON.stringify({group_id: id, group_name: this.detail.group_name, group_desc: this.detail.group_desc, user_id: this.session.id});
     this.req.getRequest('apptour/update_group?request='+param+'&api_key='+TOKEN).subscribe(data => {
       if (data.status == 1) {
         this.app.showToast('Group updated', 2000, 'top', 'success');
         this.doRefresh(event);
       } else {
-        this.app.showToast(data.message, 2000, 'top', 'success');
+        this.app.showToast(data.message, 2000, 'top');
       }
     });
   }

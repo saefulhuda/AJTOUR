@@ -4,6 +4,7 @@ import { HttpRequestService } from 'src/app/http-request.service';
 import { environment } from 'src/environments/environment';
 import { AppServiceService } from 'src/app/app-service.service';
 import { Storage } from '@ionic/storage';
+import { NavController } from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -17,7 +18,7 @@ export class CommentPage implements OnInit {
   allComment: any;
   comment: any;
   session: any;
-  constructor(private activatedRoute: ActivatedRoute, private req: HttpRequestService, private app: AppServiceService, private route: Router, private storage: Storage) { 
+  constructor(public nav: NavController, private activatedRoute: ActivatedRoute, private req: HttpRequestService, private app: AppServiceService, private route: Router, private storage: Storage) { 
     this.activatedRoute.params.subscribe(param => {
       this.commentId = param.id;
     });
@@ -39,7 +40,7 @@ export class CommentPage implements OnInit {
   }
 
   backToStory() {
-    this.route.navigate(['live/story']);
+    this.nav.back();
   }
 
   toProfile(id) {

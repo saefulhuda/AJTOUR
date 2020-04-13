@@ -28,8 +28,14 @@ export class LivePage implements OnInit {
   }
 
   showSideMenu() {
-    console.log('Show side menu');
-    this.route.navigate(['live/side']);
+    let currentUri = this.route.url;
+    if (currentUri != '/live/side')  {
+      this.route.navigate(['live/side']);
+      console.log('Nav side menu');
+    } else {
+      this.nav.back();
+      console.log('Nav back')
+    }
   }
 
 }

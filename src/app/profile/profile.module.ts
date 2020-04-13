@@ -6,9 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProfilePageRoutingModule } from './profile-routing.module';
 
-import { ProfilePage } from './profile.page';
+import { ProfilePage, ModalInvite } from './profile.page';
 import { generalProfile } from './profile.page';
-import { storyProfile } from './profile.page';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +15,6 @@ import { storyProfile } from './profile.page';
     IonicModule,
     ProfilePageRoutingModule
   ],
-  declarations: [ProfilePage, generalProfile, storyProfile]
+  declarations: [ProfilePage, generalProfile, ModalInvite]
 })
 export class ProfilePageModule {}

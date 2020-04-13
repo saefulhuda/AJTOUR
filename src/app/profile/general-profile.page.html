@@ -13,15 +13,15 @@
                 </ion-col>
                 <ion-col size="8" style="text-align: center;">
                     <ion-row>
-                        <ion-col size="4">
+                        <ion-col (click)="showFollower(profile.id)" size="4">
                             <b>{{follower.length}}</b><br>
                             <p>Follower</p>
                         </ion-col>
-                        <ion-col size="4">
+                        <ion-col (click)="showFollowing(profile.id)" size="4">
                             <b>{{following.length}}</b><br>
                             <p>Following</p>
                         </ion-col>
-                        <ion-col size="4">
+                        <ion-col (click)="showGroups(profile.id)" size="4">
                             <b>{{groups.length}}</b><br>
                             <p>Group</p>
                         </ion-col>
@@ -57,13 +57,13 @@
     <ion-grid>
         <ion-row>
             <ion-col size="12">
-                <ion-segment>
-                    <ion-segment-button (click)="storyStatus = 0" value="friends">
+                <ion-segment (ionChange)="showStory($event)">
+                    <ion-segment-button value="0">
                         <ion-label>
                             <ion-icon name="film-outline"></ion-icon>
                         </ion-label>
                     </ion-segment-button>
-                    <ion-segment-button (click)="storyStatus = 1" value="enemies">
+                    <ion-segment-button value="1">
                         <ion-label>
                             <ion-icon name="grid-outline"></ion-icon>
                         </ion-label>
@@ -129,4 +129,8 @@
             </ion-col>
         </ion-row>
     </ion-grid>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>
