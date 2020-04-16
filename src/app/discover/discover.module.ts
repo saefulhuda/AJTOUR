@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { DiscoverPageRoutingModule } from './discover-routing.module';
 
-import { DiscoverPage } from './discover.page';
+import { DiscoverPage, DiscoverDetail } from './discover.page';
 
 @NgModule({
   imports: [
@@ -15,6 +15,6 @@ import { DiscoverPage } from './discover.page';
     IonicModule,
     DiscoverPageRoutingModule
   ],
-  declarations: [DiscoverPage]
+  declarations: [DiscoverPage, DiscoverDetail]
 })
 export class DiscoverPageModule {}

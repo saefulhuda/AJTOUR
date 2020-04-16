@@ -16,7 +16,7 @@ const TOKEN = environment.api_token;
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
   profile: any;
   profileName: string;
   session: any;
@@ -25,7 +25,7 @@ export class ProfilePage {
   quote: any;
   quoteStatus: any;
   storyStatus: any;
-  
+
   follower: any = [];
   following: any = [];
   groups: any = [];
@@ -33,37 +33,35 @@ export class ProfilePage {
   start: any;
   limit: any;
   stories: any = [];
-  constructor(public browser: InAppBrowser, public call: CallNumber, public modalController: ModalController, public activedRoute: ActivatedRoute, public req: HttpRequestService, public route: Router, private storage: Storage, private camera: Camera, public app: AppServiceService) {
-    this.session = []; 
-    this.storage.get('session').then(data => {
-      if (data==undefined) {
-        this.route.navigate(['auth']);
-      } else {
-        this.session = data;
-        this.ngOnInit();
-      }
-    });
+  mygroups: any = [];
+  constructor(public browser: InAppBrowser, public call: CallNumber, public modalController: ModalController, public activedRoute: ActivatedRoute, public req: HttpRequestService, public route: Router, public storage: Storage, private camera: Camera, public app: AppServiceService) {
+    this.limit = 6;
+    this.start = 0;
   }
 
   ngOnInit() {
-    this.limit = 6;
-    this.start = 0;
     this.profile = [];
     this.quoteStatus = 1;
     this.storyStatus = 0;
-    let param = JSON.stringify({id: this.session.id});
-    this.req.getRequest('apptour/get_user_by_id?request='+param+'&api_key='+TOKEN).subscribe(data => {
-      this.profile = data.result;
-    });
-    this.req.getRequest('apptour/get_user_by_id?request='+JSON.stringify({id:this.session.id})).subscribe(data => {
-      if (data.status == 1) {
-        this.profile = data.result;
+    this.session = [];
+    this.storage.get('session').then(data => {
+      if (data == undefined) {
+        this.route.navigate(['auth']);
       } else {
-        this.app.showToast(data.message, 2000, 'top', 'danger');
+        this.session = data;
+        this.alterInit();
       }
     });
+    console.log('init');
+  }
 
-    this.req.getRequest('apptour/get_follower?request='+JSON.stringify({user_id:this.session.id})).subscribe(data => {
+  alterInit() {
+    let param = JSON.stringify({ id: this.session.id });
+    this.req.getRequest('apptour/get_user_by_id?request=' + param + '&api_key=' + TOKEN).subscribe(data => {
+      this.profile = data.result;
+    });
+
+    this.req.getRequest('apptour/get_follower?request=' + JSON.stringify({ user_id: this.session.id })).subscribe(data => {
       if (data.status == 1) {
         this.follower = data.result;
       } else {
@@ -71,7 +69,7 @@ export class ProfilePage {
       }
     });
 
-    this.req.getRequest('apptour/get_following?request='+JSON.stringify({user_id:this.session.id})).subscribe(data => {
+    this.req.getRequest('apptour/get_following?request=' + JSON.stringify({ user_id: this.session.id })).subscribe(data => {
       if (data.status == 1) {
         this.following = data.result;
       } else {
@@ -79,7 +77,7 @@ export class ProfilePage {
       }
     });
 
-    this.req.getRequest('apptour/get_all_group_by_member?request='+JSON.stringify({user_id:this.session.id})+'&api_key='+TOKEN).subscribe(data => {
+    this.req.getRequest('apptour/get_all_group_by_member?request=' + JSON.stringify({ user_id: this.session.id }) + '&api_key=' + TOKEN).subscribe(data => {
       if (data.status == 1) {
         this.groups = data.result;
       } else {
@@ -87,11 +85,18 @@ export class ProfilePage {
       }
     });
 
-    this.loadStory();
+    this.req.getRequest('apptour/get_all_story_by_user_id?request=' + JSON.stringify({ user_id: this.session.id, start: this.start, limit: this.limit }) + '&api_key=' + TOKEN).subscribe(data => {
+      if (data.status == 1) {
+          this.stories = data.result;
+          this.user = data.result.user_detail;
+      } else {
+        this.app.showToast(data.message, 2000, 'top', 'danger');
+      }
+    });
   }
 
   protected loadStory() {
-    this.req.getRequest('apptour/get_all_story_by_user_id?request='+JSON.stringify({user_id:this.session.id, start: this.start, limit: this.limit})+'&api_key='+TOKEN).subscribe(data => {
+    this.req.getRequest('apptour/get_all_story_by_user_id?request=' + JSON.stringify({ user_id: this.session.id, start: this.start, limit: this.limit }) + '&api_key=' + TOKEN).subscribe(data => {
       if (data.status == 1) {
         for (let list of data.result) {
           this.stories.push(list);
@@ -140,7 +145,7 @@ export class ProfilePage {
           mediaType: this.camera.MediaType.PICTURE
         }
         this.camera.getPicture(options).then((result) => {
-          this.profile.path_image = 'data:image/jpeg;base64,'+result;
+          this.profile.path_image = 'data:image/jpeg;base64,' + result;
           this.updatePhoto();
         });
       }
@@ -157,7 +162,7 @@ export class ProfilePage {
           mediaType: this.camera.MediaType.PICTURE
         }
         this.camera.getPicture(options).then((result) => {
-          this.profile.path_image = 'data:image/jpeg;base64,'+result;
+          this.profile.path_image = 'data:image/jpeg;base64,' + result;
           this.updatePhoto();
         });
       }
@@ -173,7 +178,7 @@ export class ProfilePage {
   }
 
   updatePhoto() {
-    let param = [{api_key: TOKEN},{file: this.profile.path_image}, {request:JSON.stringify({user_id:this.session.id})}];
+    let param = [{ api_key: TOKEN }, { file: this.profile.path_image }, { request: JSON.stringify({ user_id: this.session.id }) }];
     this.req.postRequest('auth/update_photo_profile', param).subscribe(data => {
       console.log(data);
       if (data.status == 1) {
@@ -192,22 +197,23 @@ export class ProfilePage {
   doUpdateQuote(id) {
     console.log('update quote');
     console.log(this.quote);
-    this.req.getRequest('auth/update_user_quote?request='+JSON.stringify({user_id:id, quote:this.quote})+'&api_key='+TOKEN).subscribe(data => {
+    this.req.getRequest('auth/update_user_quote?request=' + JSON.stringify({ user_id: id, quote: this.quote }) + '&api_key=' + TOKEN).subscribe(data => {
       if (data.status == 1) {
         this.app.showToast('Success update quote', 2000, 'top');
         this.doRefresh(event);
       } else {
-        this.app.showToast('Failed '+data.message, 2000, 'top');
+        this.app.showToast('Failed ' + data.message, 2000, 'top');
       }
     });
     this.quoteStatus = 1;
   }
 
   public doLike(id) {
-    let param = JSON.stringify({user_id:this.session.id, story_id:id});
-    this.req.getRequest('apptour/add_like?request='+param+'&api_key='+TOKEN).subscribe(data => {
+    let param = JSON.stringify({ user_id: this.session.id, story_id: id });
+    this.req.getRequest('apptour/add_like?request=' + param + '&api_key=' + TOKEN).subscribe(data => {
       if (data.status == 1) {
         this.app.showToast(data.message, 2000, 'top', 'success');
+        this.doRefresh(event);
       } else {
         this.app.showToast(data.message, 2000, 'top');
       }
@@ -215,23 +221,53 @@ export class ProfilePage {
   }
 
   showComment(id) {
-    this.route.navigate(['live/story/comment/'+id]);
+    this.route.navigate(['live/story/comment/' + id]);
   }
 
   toStory(id) {
-    console.log(id);
+    let buttons = [{
+      text: 'Hapus',
+      role: 'destructive',
+      icon: 'trash-outline',
+      handler: () => {
+        console.log('Delete clicked');
+        let param = JSON.stringify({ user_id: this.session.id, story_id: id });
+        this.req.getRequest('apptour/delete_story?request=' + param + '&api_key=' + TOKEN).subscribe(data => {
+          if (data.status == 1) {
+            this.app.showToast('Story berhasil dihapus', 2000, 'top', 'success');
+            this.doRefresh(event);
+          } else {
+            this.app.showToast(data.message, 2000, 'top', 'danger');
+          }
+        });
+      }
+    }, {
+      text: 'Update',
+      icon: 'create-outline',
+      handler: () => {
+        console.log('Update clicked');
+      }
+    }, {
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    }];
+    this.app.showActionSheet(buttons, 'Actions');
   }
 
   showFollower(id) {
-    this.route.navigate(['live/follow/'+id]);
+    this.route.navigate(['live/follow/' + id]);
   }
 
   showFollowing(id) {
-    this.route.navigate(['live/following/'+id]);
+    this.route.navigate(['live/following/' + id]);
   }
 
   showGroups(id) {
-    this.route.navigate(['live/group/list/'+id]);
+    this.route.navigate(['live/group/list/' + id]);
   }
 
   showStory(ev: any) {
@@ -247,16 +283,18 @@ export class ProfilePage {
 })
 export class generalProfile extends ProfilePage implements OnInit {
   profile: any = [];
-  arrGroup: any = [];
 
   ngOnInit() {
     console.log('Class profile OK');
     this.storyStatus = 0;
     this.start = 0;
-    this.limit = 9;
+    this.limit = 6;
+    this.storage.get('session').then(data => {
+      this.session = data;
+    });
     this.activedRoute.params.subscribe(param => {
       console.log(param.id);
-      this.req.getRequest('apptour/get_user_by_id?request='+JSON.stringify({id:param.id})).subscribe(data => {
+      this.req.getRequest('apptour/get_user_by_id?request=' + JSON.stringify({ id: param.id })).subscribe(data => {
         if (data.status == 1) {
           this.profile = data.result;
         } else {
@@ -264,7 +302,7 @@ export class generalProfile extends ProfilePage implements OnInit {
         }
       });
 
-      this.req.getRequest('apptour/get_follower?request='+JSON.stringify({user_id:param.id})).subscribe(data => {
+      this.req.getRequest('apptour/get_follower?request=' + JSON.stringify({ user_id: param.id })).subscribe(data => {
         if (data.status == 1) {
           this.follower = data.result;
         } else {
@@ -272,7 +310,7 @@ export class generalProfile extends ProfilePage implements OnInit {
         }
       });
 
-      this.req.getRequest('apptour/get_following?request='+JSON.stringify({user_id:param.id})).subscribe(data => {
+      this.req.getRequest('apptour/get_following?request=' + JSON.stringify({ user_id: param.id })).subscribe(data => {
         if (data.status == 1) {
           this.following = data.result;
         } else {
@@ -280,20 +318,28 @@ export class generalProfile extends ProfilePage implements OnInit {
         }
       });
 
-      this.req.getRequest('apptour/get_all_group_by_member?request='+JSON.stringify({user_id:param.id})+'&api_key='+TOKEN).subscribe(data => {
+      this.req.getRequest('apptour/get_all_group_by_member?request=' + JSON.stringify({ user_id: param.id }) + '&api_key=' + TOKEN).subscribe(data => {
         if (data.status == 1) {
           this.groups = data.result;
         } else {
           this.groups = [];
         }
       });
-      this.loadStory();
+
+      this.req.getRequest('apptour/get_all_story_by_user_id?request=' + JSON.stringify({ user_id: param.id, start: this.start, limit: this.limit }) + '&api_key=' + TOKEN).subscribe(data => {
+        if (data.status == 1) {
+            this.stories = data.result;
+            this.user = data.result.user_detail;
+        } else {
+          this.app.showToast(data.message, 2000, 'top', 'danger');
+        }
+      });
     });
   }
 
   protected loadStory() {
     this.activedRoute.params.subscribe(param => {
-      this.req.getRequest('apptour/get_all_story_by_user_id?request='+JSON.stringify({user_id:param.id, start: this.start, limit: this.limit})+'&api_key='+TOKEN).subscribe(data => {
+      this.req.getRequest('apptour/get_all_story_by_user_id?request=' + JSON.stringify({ user_id: param.id, start: this.start, limit: this.limit }) + '&api_key=' + TOKEN).subscribe(data => {
         if (data.status == 1) {
           for (let list of data.result) {
             this.stories.push(list);
@@ -344,9 +390,9 @@ export class generalProfile extends ProfilePage implements OnInit {
   }
 
   doFollow(id) {
-    console.log('do follow '+id);
-    let param = JSON.stringify({user_id:this.session.id,following_user_id:id});
-    this.req.getRequest('apptour/follow?request='+param+'&api_key='+TOKEN).subscribe(data => {
+    console.log('do follow ' + id);
+    let param = JSON.stringify({ user_id: this.session.id, following_user_id: id });
+    this.req.getRequest('apptour/follow?request=' + param + '&api_key=' + TOKEN).subscribe(data => {
       if (data.status == 1 || data.status == 2) {
         this.app.showToast(data.message, 2000, 'top', 'success');
         this.doRefresh(event);
@@ -354,11 +400,12 @@ export class generalProfile extends ProfilePage implements OnInit {
     });
   }
 
-  doInvite() {
-    this.req.getRequest('apptour/read_all_group_by_owner?request='+JSON.stringify({user_id:this.session.id})).subscribe(data => {
-      if (data.status == 1) {
-      }
+  async doInvite(email) {
+    console.log('Invite '+ email);
+    const modal = await this.modalController.create({
+      component: ModalInvite
     });
+    await modal.present();
   }
 
   showStory(ev: any) {
@@ -370,8 +417,27 @@ export class generalProfile extends ProfilePage implements OnInit {
   templateUrl: './modal-invite.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ModalInvite {
- 
-   constructor(private navParams: NavParams) {
-   }
+export class ModalInvite extends ProfilePage implements OnInit {
+
+  ngOnInit() {
+    this.storage.get('session').then(data => {
+      this.session = data;
+      this.req.getRequest('apptour/read_all_group_by_owner?request=' + JSON.stringify({ user_id: this.session.id })).subscribe(data => {
+        if (data.status == 1) {
+          this.mygroups = data.result;
+        }
+      });
+    });
+  }
+
+  close() {
+    console.log('close modal');
+    this.modalController.dismiss({
+      'dismissed': true
+    });
+  }
+
+  invite(id) {
+    console.log('invite '+id);
+  }
 }

@@ -1,9 +1,45 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>discover</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-slides>
+          <ion-slide *ngFor="let nature of natures">
+            <div class="slide">
+              <img (click)="showDetail(nature.id)" alt="{{nature.title}}"
+                src="{{nature.image}}" />
+              <p>{{nature.title}}</p>
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
 
+    <ion-row>
+      <ion-col size="12">
+        <ion-slides>
+          <ion-slide *ngFor="let food of foods">
+            <div class="slide">
+              <img (click)="showDetail(food.id)" alt="{{food.title}}"
+                src="{{food.image}}" />
+              <p>{{food.title}}</p>
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-slides>
+          <ion-slide *ngFor="let lodging of lodgings">
+            <div class="slide">
+              <img (click)="showDetail(lodging.id)" alt="{{lodging.title}}"
+                src="{{lodging.image}}" />
+              <p>{{lodging.title}}</p>
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

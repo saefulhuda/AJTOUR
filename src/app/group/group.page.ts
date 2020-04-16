@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AppServiceService } from '../app-service.service';
@@ -21,7 +21,7 @@ sumMember: any;
 profile: any;
 image: any;
 updateGroup: any;
-  constructor(private app: AppServiceService, public camera: Camera, private route: Router, private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController, private storage: Storage) {
+  constructor(public alertController: AlertController, private app: AppServiceService, public camera: Camera, private route: Router, private activatedRoute: ActivatedRoute, public req: HttpRequestService, public navCtrl: NavController, private storage: Storage) {
     this.storage.get('session').then(data => {
       if (data==undefined) {
         this.route.navigate(['auth']);
@@ -147,6 +147,39 @@ updateGroup: any;
         this.app.showToast(data.message, 2000, 'top');
       }
     });
+  }
+
+  async leaveGroup(id) {
+    console.log('leave group '+id);
+    const alert = await this.alertController.create({
+      header: 'Leave group!',
+      message: 'Anda yakin ingin keluar dari group?',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm tidak yakin');
+          }
+        }, {
+          text: 'Yakin',
+          handler: () => {
+            console.log('Confirm yakin');
+            let param = JSON.stringify({user_id: this.session.id, group_id: id});
+            this.req.getRequest('apptour/leave_group?request='+param+'&api_key='+TOKEN).subscribe(data => {
+              if (data.status == 1) {
+                this.app.showToast('Sekarang anda bukan menjadi bagian dari group', 2000, 'top', 'success');
+                this.navCtrl.back();
+              } else {
+                this.app.showToast(data.message, 2000, 'top', 'danger');
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
 }

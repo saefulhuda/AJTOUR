@@ -1,70 +1,23 @@
 <ion-content>
-    <!-- Custom Refresher Content -->
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-    <ion-content>
-        <div *ngFor="let data of stories">
-            <ion-card-header>
-                <ion-toolbar>
-                    <ion-buttons slot="start">
-                        <ion-button>
-                            <ion-avatar>
-                                <img (click)="toProfile(user.id)" src="{{user.path_image}}">
-                            </ion-avatar>
-                        </ion-button>
-                    </ion-buttons>
-                    <ion-buttons slot="end">
-                        <ion-button>
-                            <ion-icon slot="icon-only" ios="ellipsis-vertical" md="ellipsis-vertical"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
-                    <ion-card-subtitle>{{user.name}}</ion-card-subtitle>
-                </ion-toolbar>
-            </ion-card-header>
-
-            <ion-card-content>
-                <img class="image-story" alt="{{data.title}}" src="{{data.resource}}">
-                <ion-grid>
-                    <ion-row>
-                        <ion-col size="6" style="text-align: center;">
-                            <ion-button (click)="doLike(data.id)" size="small" color="dark" fill="clear"><ion-icon name="thumbs-up-outline"></ion-icon></ion-button>
-                            <ion-button (click)="showComment(data.id)" size="small" color="dark" fill="clear"><ion-icon name="chatbox-outline"></ion-icon></ion-button>
-                            <ion-button size="small" color="dark" fill="clear"><ion-icon name="share-social-outline"></ion-icon></ion-button>
-                        </ion-col>
-                        <ion-col size="6" style="text-align: end;">
-                            <ion-button size="small" color="dark" fill="clear"><ion-icon name="copy-outline"></ion-icon></ion-button>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col size="12">
-                            <ion-card-subtitle>{{data.likers.length}} like</ion-card-subtitle>
-                        </ion-col>
-                    </ion-row>
-                    <hr>
-                    <ion-row>
-                        <ion-col size="12">
-                            <ion-card-subtitle>{{data.title}}</ion-card-subtitle>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col size="12">
-                            <ion-card-subtitle>{{data.content}}</ion-card-subtitle>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col size="10">
-                            <ion-input clearInput [(ngModel)]="comment" placeholder="comment .."></ion-input>
-                        </ion-col>
-                        <ion-col size="2">
-                            <ion-button (click)="doComment(data.id)" size="small" color="dark" fill="clear">
-                                <ion-icon name="paper-plane-outline"></ion-icon>
-                            </ion-button>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </ion-card-content>
-        </div>
-    </ion-content>
-    <hr>
+    <ion-header translucent>
+        <ion-toolbar>
+          <ion-title>Modal Content</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="close()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content fullscreen>
+        <ion-list>
+          <ion-item *ngFor="let mygroup of mygroups">
+            <ion-avatar slot="start" (click)="invite(mygroup.id)">
+              <img alt="{{mygroup.group_name}}" src="{{mygroup.group_logo}}">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{mygroup.group_name}}</h2>
+              <p>{{mygroup.group_desc}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
 </ion-content>

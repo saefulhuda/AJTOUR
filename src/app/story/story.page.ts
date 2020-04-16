@@ -22,15 +22,23 @@ export class StoryPage implements OnInit {
   limit: any;
   constructor(public req: HttpRequestService, private route: Router, private app: AppServiceService, private storage: Storage) {
     this.allComment = 0;
+    this.start = 0;
+    this.limit = 4;
   }
 
   ngOnInit() {
     console.log('initial');
-    this.start = 0;
-    this.limit = 4;
     this.storage.get('session').then(data => {
       this.session = data;
-      this.loadStory();
+      let param = JSON.stringify({ user_id: this.session.id, start: 0, limit: 4 });
+      this.req.getRequest("apptour/get_all_story_by_following?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
+        if (data.status == 1) {
+            this.stories = data.result;
+            this.user = data.result.user_detail;
+        } else {
+          console.log(data.result);
+        }
+      });
     });
   }
 
@@ -77,7 +85,6 @@ export class StoryPage implements OnInit {
 
   doRefresh(event) {
     console.log('Begin async operation');
-    this.ngOnInit();
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
@@ -91,6 +98,40 @@ export class StoryPage implements OnInit {
       this.loadStory();
       event.target.complete();
     }, 2000);
+  }
+
+  storyAction(id) {
+    let buttons = [{
+      text: 'Hapus',
+      role: 'destructive',
+      icon: 'trash-outline',
+      handler: () => {
+        console.log('Delete clicked');
+        let param = JSON.stringify({user_id: this.session.id, story_id: id});
+        this.req.getRequest('apptour/delete_story?request='+param+'&api_key='+TOKEN).subscribe(data => {
+          if (data.status == 1) {
+            this.app.showToast('Story berhasil dihapus', 2000, 'top', 'success');
+            this.doRefresh(event);
+          } else {
+            this.app.showToast(data.message, 2000, 'top', 'danger');
+          }
+        });
+      }
+    }, {
+      text: 'Update',
+      icon: 'create-outline',
+      handler: () => {
+        console.log('Update clicked');
+      }
+    }, {
+      text: 'Cancel',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    }];
+    this.app.showActionSheet(buttons, 'Actions');
   }
 
   doPostStory() {
