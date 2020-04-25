@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpRequestService } from '../http-request.service';
 import { environment } from 'src/environments/environment';
+import { NavController } from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -12,7 +13,11 @@ const TOKEN = environment.api_token;
 export class AboutPage implements OnInit {
 guids: any;
 company: any;
-  constructor(private route: Router, private req: HttpRequestService) {
+appName: any;
+appVersion: any;
+  constructor(private route: Router, private req: HttpRequestService, public nav: NavController) {
+    this.appName = 'Ajcomm tour';
+    this.appVersion = '1.0.0';
   }
 
   ngOnInit() {
@@ -43,6 +48,10 @@ company: any;
       console.log('Async operation has ended');
       event.target.complete();
     }, 2000);
+  }
+
+  back() {
+    this.nav.back();
   }
 
 }

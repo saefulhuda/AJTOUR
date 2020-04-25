@@ -103,6 +103,10 @@ const routes: Routes = [
         loadChildren: () => import('./side/side.module').then( m => m.SidePageModule)
       },
       {
+        path: 'search',
+        loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
+      },
+      {
         path: '',
         redirectTo: '/live/home',
         pathMatch: 'full'
@@ -113,6 +117,10 @@ const routes: Routes = [
     path: '',
     redirectTo: '/live/home',
     pathMatch: 'full'
+  },
+  {
+    path: 'search',
+    loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
   }
 ];
 

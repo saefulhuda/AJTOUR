@@ -9,7 +9,7 @@ const routes: Routes = [
     component: TourPage
   },
   {
-    path: 'live/:id',
+    path: ':id',
     component: TourPage
   },
   {

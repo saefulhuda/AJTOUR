@@ -38,4 +38,8 @@ export class LivePage implements OnInit {
     }
   }
 
+  showSearch() {
+    this.route.navigate(['live/search']);
+  }
+
 }

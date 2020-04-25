@@ -1,51 +1,42 @@
 <ion-content>
-    <ion-card>
-        <ion-card-header>
-            <ion-card-subtitle>Post Story</ion-card-subtitle>
-        </ion-card-header>
-        <hr>
-        <ion-card-content>
-            <img *ngIf="image != null" [src]="image">
-        </ion-card-content>
-        <hr>
-        <ion-grid>
-            <ion-row>
-                <ion-col size="12">
-                    <ion-label position="floating">Title</ion-label>
-                    <ion-input clearInput [(ngModel)]="title"></ion-input>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-        <ion-grid>
-            <ion-row>
-                <ion-col size="12">
-                    <ion-label position="floating">Describe</ion-label>
-                    <ion-input clearInput [(ngModel)]="content"></ion-input>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-        <hr>
-        <ion-grid>
-            <ion-row class="button-center">
-                <ion-col size="4">
-                    <ion-button (click)="choiceFile()" color="dark" size="small">
-                        Pilih
-                        <ion-icon name="albums-outline"></ion-icon>
-                    </ion-button>
-                </ion-col>
-                <ion-col size="4">
-                    <ion-button (click)="postStory()" color="dark" size="small">
-                        Posting
-                        <ion-icon name="cloud-upload-outline"></ion-icon>
-                    </ion-button>
-                </ion-col>
-                <ion-col size="4">
-                    <ion-button color="dark" size="small">
-                        Reset
-                        <ion-icon name="reload-outline"></ion-icon>
-                    </ion-button>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </ion-card>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="2">
+                <ion-button (click)="back()" color="dark" fill="clear">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col size="6" style="text-align: center;">
+                <p>Story Baru</p>
+            </ion-col>
+            <ion-col size="4" *ngIf="image != null">
+                <ion-button (click)="postStory()" position="end" color="dark" fill="clear">
+                    Posting
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <img *ngIf="image != null" [src]="image">
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-label position="floating">Caption</ion-label>
+                <ion-input clearInput [(ngModel)]="title"></ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-label position="floating">Tulis keterangan ..</ion-label>
+                <ion-input clearInput [(ngModel)]="content"></ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-label position="floating">Tambah lokasi</ion-label>
+                <ion-input clearInput [(ngModel)]="locate"></ion-input>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

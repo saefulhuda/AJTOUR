@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AppServiceService } from '../app-service.service';
+import { NavController } from '@ionic/angular';
 
 const TOKEN = environment.api_token
 @Component({
@@ -18,7 +19,7 @@ export class AuthPage implements OnInit {
   password: string;
   lat: any;
   long: any;
-  constructor(public app: AppServiceService, public req: HttpRequestService, public route: Router, private storage: Storage, private geolocation: Geolocation) {
+  constructor(public nav: NavController, public app: AppServiceService, public req: HttpRequestService, public route: Router, private storage: Storage, private geolocation: Geolocation) {
   }
 
   ngOnInit() {
@@ -81,5 +82,9 @@ export class AuthForgotPage extends AuthPage implements OnInit {
         this.app.showToast(data.message, 2000, 'top', 'danger');
       }
     });
+  }
+
+  back() {
+    this.nav.back();
   }
 }

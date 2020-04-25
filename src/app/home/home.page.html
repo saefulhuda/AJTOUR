@@ -3,20 +3,20 @@
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-card>
-        <ion-card-content>
-            <ion-slides>
-                <ion-slide *ngFor="let list of ads">
-                    <div class="slide">
-                        <img alt="{{list.title}}" src="{{list.image}}" />
-                        <h2>{{list.title}}</h2>
-                        <p>{{list.desc}}</p>
-                    </div>
-                </ion-slide>
-            </ion-slides>
-        </ion-card-content>
-    </ion-card>
-
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12">
+                <ion-slides>
+                    <ion-slide *ngFor="let list of ads">
+                        <div class="slide">
+                            <img alt="{{list.title}}" src="{{list.image}}" />
+                            <p>{{list.title}}</p>
+                        </div>
+                    </ion-slide>
+                </ion-slides>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
     <ion-card>
         <ion-card-content>
             <ion-list>

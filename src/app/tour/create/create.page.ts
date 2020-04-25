@@ -5,8 +5,8 @@ import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
 import { NativeGeocoder, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { Map, tileLayer, marker, icon, Marker, polyline, latLng} from 'leaflet';
-import { NavController, PopoverController } from '@ionic/angular';
+import { Map, tileLayer, marker, icon, Marker, polyline, latLng, popup} from 'leaflet';
+import { NavController} from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -20,11 +20,25 @@ export class CreatePage {
   map: Map;
   cordinateList: any;
   newMarker: any;
+  tileMap: any = [];
 
   @ViewChild('mapId', {static: false}) mapElement: ElementRef;
 
-  constructor(private PopoverController: PopoverController, private navCtrl: NavController, private activatedRoute: ActivatedRoute, public req: HttpRequestService, private storage: Storage, private geolocation: Geolocation, private geocoder: NativeGeocoder, public route: Router) {
-  // this.intervalLoad(); 
+  constructor(
+    private navCtrl: NavController, 
+    public activatedRoute: ActivatedRoute, 
+    public req: HttpRequestService, 
+    private storage: Storage, 
+    private geolocation: Geolocation, 
+    private geocoder: NativeGeocoder, 
+    public route: Router
+    ) {
+  this.tileMap.street = tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution:
+      'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+      maxZoom: 20
+  });
+
   }
 
   ionViewDidEnter() {
@@ -45,28 +59,8 @@ export class CreatePage {
 
   loadMap(latOwn:number, longOwn: number) {
     console.log('load map');
-    let route = polyline([[ 46.78465227596462,-121.74141269177198 ],
-      [ 46.80047278292477, -121.73470708541572 ],
-      [ 46.815471360459924, -121.72521826811135 ],
-      [ 46.8360239546746, -121.7323131300509 ],
-      [ 46.844306448474526, -121.73327445052564 ],
-      [ 46.84979408048093, -121.74325201660395 ],
-      [ 46.853193528950214, -121.74823296256363 ],
-      [ 46.85322881676257, -121.74843915738165 ],
-      [ 46.85119913890958, -121.7519719619304 ],
-      [ 46.85103829018772, -121.7542376741767 ],
-      [ 46.85101557523012, -121.75431755371392 ],
-      [ 46.85140013694763, -121.75727385096252 ],
-      [ 46.8525277543813, -121.75995212048292 ],
-      [ 46.85290292836726, -121.76049157977104 ],
-      [ 46.8528160918504, -121.76042997278273 ]]);
-      console.log(route);
     this.map = new Map('mapId').setView([latOwn, longOwn], 18);
-    tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        maxZoom: 20
-    }).addTo(this.map);
+    this.tileMap.street.addTo(this.map);
     this.generateMemberPosition();
   }
 
@@ -99,27 +93,14 @@ export class CreatePage {
       shadowSize: [41, 41]
     });
     Marker.prototype.options.icon = iconDefault;
-
     let popUp = '<img src="' + image + '"><hr><p>' + name + '</p>';
     this.newMarker = marker([lat, long], {draggable: 
       true}).addTo(this.map)
       .bindPopup(popUp);
-      // .openPopup();
   }
 
-  // intervalLoad() {
-  //   let timerId = setInterval(() => this.generateMemberPosition(), 10000);
-  // }
-
-  submitCreateTour() {
-  }
-
-  async showPopLocation(e) {
-    const pop = await this.PopoverController.create({
-      component: PopSelectLocation,
-      event: e
-    });
-    pop.present();
+  startTour() {
+    this.route.navigate(['tour/'+this.id]);
   }
 
   doRefresh(event) {
@@ -134,19 +115,4 @@ export class CreatePage {
     this.map.remove();
   }
 
-}
-
-@Component({
-  templateUrl: 'pop-select-location.page.html',
-})
-
-export class PopSelectLocation extends CreatePage implements OnInit {
-
-  ngOnInit() {
-    
-  }
-
-  toLiveTour(id) {
-    this.route.navigate(['tour/live/'+id]);
-  }
 }

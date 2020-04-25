@@ -5,6 +5,7 @@ import { HttpRequestService } from 'src/app/http-request.service';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { NavController } from '@ionic/angular';
 
 const TOKEN = environment.api_token;
 @Component({
@@ -17,13 +18,14 @@ export class AddPage implements OnInit {
   image: any;
   title: any;
   content: any;
-  constructor(private camera: Camera, private app: AppServiceService, private req: HttpRequestService, private storage: Storage, private route: Router) { }
+  constructor(public nav: NavController, private camera: Camera, private app: AppServiceService, private req: HttpRequestService, private storage: Storage, private route: Router) { }
 
   ngOnInit() {
     console.log('initial');
     this.storage.get('session').then(data => {
       this.session = data;
     });
+    this.choiceFile();
   }
 
   choiceFile() {
@@ -83,6 +85,10 @@ export class AddPage implements OnInit {
        this.app.showAlert('','Sabar ya !!', 'Anda belum memasukan gambar story'); 
       }
     });
+  }
+
+  back() {
+    this.nav.back();
   }
 
 }

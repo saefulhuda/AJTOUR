@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { AppServiceService } from '../app-service.service';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController, NavParams, NavController } from '@ionic/angular';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { from } from 'rxjs';
@@ -34,7 +34,7 @@ export class ProfilePage implements OnInit {
   limit: any;
   stories: any = [];
   mygroups: any = [];
-  constructor(public browser: InAppBrowser, public call: CallNumber, public modalController: ModalController, public activedRoute: ActivatedRoute, public req: HttpRequestService, public route: Router, public storage: Storage, private camera: Camera, public app: AppServiceService) {
+  constructor(public browser: InAppBrowser, public call: CallNumber, public modalController: ModalController, public activedRoute: ActivatedRoute, public req: HttpRequestService, public route: Router, public storage: Storage, private camera: Camera, public app: AppServiceService, public nav: NavController) {
     this.limit = 6;
     this.start = 0;
   }
@@ -439,5 +439,20 @@ export class ModalInvite extends ProfilePage implements OnInit {
 
   invite(id) {
     console.log('invite '+id);
+    this.activedRoute.params.subscribe(param => {
+      // let param = JSON.stringify({group_id: id, friend_id: friend});
+      // this.req.getRequest('apptour/add_friend_to_group?request=' + param + '&api_key=' + TOKEN).subscribe(data => {
+      //   if (data.status == 1) {
+      //     this.app.showToast('Anda berhasil menambahkan teman', 2000, 'top', 'success');
+      //     this.back();
+      //   } else {
+      //     this.app.showToast(data.message, 2000, 'top');
+      //   }
+      // });
+    });
+  }
+
+  back() {
+    this.nav.back();
   }
 }

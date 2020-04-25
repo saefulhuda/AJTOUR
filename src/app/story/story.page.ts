@@ -34,7 +34,8 @@ export class StoryPage implements OnInit {
       this.req.getRequest("apptour/get_all_story_by_following?request=" + param + "&api_key=" + TOKEN).subscribe(data => {
         if (data.status == 1) {
             this.stories = data.result;
-            this.user = data.result.user_detail;
+            for (let list of data.result)
+            this.user = list.user_detail;
         } else {
           console.log(data.result);
         }
@@ -63,10 +64,10 @@ export class StoryPage implements OnInit {
       console.log(data);
       if (data.status == 1) {
         this.app.showToast(data.message, 2000, 'top', 'primary');
-        this.doRefresh(event);
       } else {
         this.app.showToast(data.message, 2000, 'top', 'dark');
       }
+      this.doRefresh(event);
     });
   }
 
@@ -86,6 +87,7 @@ export class StoryPage implements OnInit {
   doRefresh(event) {
     console.log('Begin async operation');
     setTimeout(() => {
+      this.ngOnInit();
       console.log('Async operation has ended');
       event.target.complete();
     }, 2000);

@@ -1,36 +1,59 @@
 <ion-header>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="2">
-          <ion-button (click)="back()" fill="clear" color="dark">
-            <ion-icon name="arrow-back-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-        <ion-col size="10">
-          <p style="text-align: center;">{{details.title}}</p>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2">
+        <ion-button (click)="back()" fill="clear" color="dark">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="10">
+        <p style="text-align: center;">{{details.title}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 <ion-content>
-    <ion-grid>
-        <ion-row *ngIf="details.video != null ">
-            <ion-col>
-                <video width="100%" height="100%" controls src="{{details.video}}"></video>
-            </ion-col>
-            <ion-col size="12">
-                <p>What do you know about {{details.title}} ?</p>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col size="12">
-                <img alt="{{details.title}}" src="{{details.image}}">
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col size="12">
-                <p style="text-align: justify;" >{{details.content}}</p>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+  <ion-grid>
+    <ion-row *ngIf="details.cordinate != '' ">
+      <ion-col size="12">
+        <div id="mapId" style="height:400px"></div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="details.video != null ">
+      <ion-col size="12">
+        <p>Apa itu {{details.title}} ?</p>
+      </ion-col>
+      <ion-col size="12">
+        <video width="100%" height="100%" controls src="{{details.video}}"></video>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-slides>
+          <ion-slide *ngFor="let img of details.images" >
+            <img alt="{{details.title}}" src="{{img}}">
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <p style="text-align: justify;">{{details.content}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="light">
+        <ion-icon md="caret-back" ios="chevron-back-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+        <ion-fab-button color="light" (click)="flight()">
+          <ion-icon name="airplane-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="light" (click)="ticketing()">
+          <ion-icon name="cart-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab-list>
+</ion-fab>
 </ion-content>

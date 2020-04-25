@@ -4,18 +4,15 @@
     </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
-    <ion-list *ngIf="member.id">
-        <ion-item>
+    <ion-list *ngIf="members.length > 0">
+        <ion-item *ngFor="let member of members" (click)="addMember(member.id)">
             <ion-avatar slot="start">
-                <img alt="{{member.name}}" src="{{member.path_image}}">
+                <img src="{{member.path_image}}" alt="{{member.name}}">
             </ion-avatar>
             <ion-label>
                 <h3>{{member.name}}</h3>
                 <p>{{member.email}}</p>
             </ion-label>
-            <ion-button (click)="addMember(member.email)">
-                <ion-icon name="person-add-outline"></ion-icon>
-            </ion-button>
         </ion-item>
     </ion-list>
 </ion-content>

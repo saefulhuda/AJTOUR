@@ -12,13 +12,12 @@ const TOKEN = environment.api_token;
 })
 export class AddPage implements OnInit {
 key: any;
-member: any;
+members: any = [];
 groupId: number;
   constructor(private activatedRoute: ActivatedRoute, public req: HttpRequestService, public app: AppServiceService, private route: Router) { 
     this.activatedRoute.params.subscribe((params) => {
       // console.log(params.id);
       this.groupId = params.id;
-      this.member = [];
     });
   }
 
@@ -27,11 +26,11 @@ groupId: number;
 
   searchMember() {
     console.log('search member');
-    let param = JSON.stringify({email:this.key});
-    this.req.getRequest("apptour/get_user_by_email?request="+param+"&api_key="+TOKEN).subscribe(data => {
+    let param = JSON.stringify({keyword:this.key});
+    this.req.getRequest("data/search_users?request="+param+"&api_key="+TOKEN).subscribe(data => {
       if (data.status == 1) {
         for (let t in data.result) {
-          this.member = data.result;
+          this.members = data.result;
         }
       } else if (data.status == 0 && data.error == 3) {
         this.app.showToast('Teman anda dengan email '+this.key+' tidak ditemukan', 4000, 'middle');
@@ -39,12 +38,12 @@ groupId: number;
     });
   }
 
-  addMember(email) {
+  addMember(id) {
     console.log('add member');
-    let param = JSON.stringify({friend_mail:email, group_id:this.groupId})
+    let param = JSON.stringify({friend_id:id, group_id:this.groupId})
     this.req.getRequest("apptour/add_friend_to_group?request="+param+"&api_key="+TOKEN).subscribe(data => {
       if (data.status == 1) {
-        this.app.showToast(email+' berhasil ditambahkan', 4000, 'top', 'success');
+        this.app.showToast(' berhasil ditambahkan', 4000, 'top', 'success');
         this.route.navigate(['live/group/',this.groupId]);
       } else {
         this.app.showToast(data.message, 2000, top);
